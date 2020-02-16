@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <ctime>
 #define MAXS 50   // Maximum number of students
 #define MAXHW 20  // Maximum number of homework grades
 
@@ -46,12 +47,12 @@ void quickSort (int* HW, int low, int high) {
 double median (int* HW, int n) {
     double m;
     quickSort(HW, 0, n);
-    n % 2 == 0 ? (m = *(HW + (n / 2) - 1) + *(HW + (n / 2)) / 2) : m = *(HW + (n / 2));
+    n % 2 == 0 ? (m = 1.00 * (*(HW + (n / 2) - 1) + *(HW + (n / 2))) / 2) : m = *(HW + (n / 2));
     return m;
 }
 
 void finalGrade (Student* S, int i, char type){
-    int hw;
+    double hw;
     type == 'm' ? hw = median(S[i].HW, S[i].nHW) : hw = average(S[i].HW, S[i].nHW);
     S[i].final = (0.4 * hw + 0.6 * S[i].exam);
 }
@@ -65,50 +66,78 @@ void optionalInputValidation (char& input, char option1, char option2) {
     }
 }
 
-void numberInputValidation (int& input) {
-    while (input < -1 || input > 10) {
-        std::cout << "Pasirinkite skaiciu is intervalo [0 ; 10] ";
+void numberInputValidation (int& input, int lowest, int highest) {
+    while (input < lowest || input > highest || std::cin.fail()) {
+        std::cout << "Pasirinkite skaiciu is intervalo [" << lowest << " ; " << highest << "] ";
         std::cin.clear();
         std::cin.ignore(256,'\n');
         std::cin >> input;
     }
 }
 
+void generateGrades (Student* S, int i) {
+    char moreGrades;
+    std::cout << "\nGeneruojami namu darbu balai.\n\n";
+    srand(time(NULL));
+    do {
+        S[i].HW[S[i].nHW] = (double)rand ()/ RAND_MAX * 10;
+        std::cout << "Sugeneruotas balas: " << S[i].HW[S[i].nHW] << "\nGeneruoti dar viena n.d. bala? (t/n) ";
+        S[i].nHW ++;
+        std::cin >> moreGrades;
+        optionalInputValidation(moreGrades, 't', 'n');
+    } while (moreGrades == 't');
+
+    S[i].exam = (double)rand ()/ RAND_MAX * 10;
+    std::cout << "Sugeneruotas egzamino balas: " << S[i].exam << "\n";
+}
+
 int main () {
     Student *S = new Student[MAXS];
-    char finalType, moreStudents = 'y';
-    int nS = 0;
-    bool moreHW = true;
+    char finalType, moreStudents = 'n', isHWRandom = 'n';
+    int nS = 0, tempHW;
+    bool moreHW;
 
     do {
-        std::cout << "Studento pavarde, vardas: ";
+        moreHW = true;
+        std::cout << "\nStudento pavarde, vardas:\n";
         std::cin >> S[nS].surname >> S[nS].name;
-        std::cout << "Namu darbu balai, atskirti tarpais. Po paskutinio balo iveskite -1: ";
-        do {
-            std::cin >> S[nS].HW[S[nS].nHW];
-            numberInputValidation(S[nS].HW[S[nS].nHW]);
-            S[nS].HW[S[nS].nHW] == -1 ? moreHW = false : S[nS].nHW++;
-        } while (moreHW);
 
-        std::cout << "Egzamino balas: ";
-        std::cin >> S[nS].exam;
-        numberInputValidation(S[nS].exam);
+        std::cout << "\nAr norite n.d. ir egzamino balus generuoti atsitiktinai? (t/n) ";
+        std::cin >> isHWRandom;
+        optionalInputValidation(isHWRandom, 't', 'n');
+        if (isHWRandom == 't') {
+            generateGrades(S, nS);
+        } else {
+            std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
+            do {
+                std::cin >> tempHW;
+                numberInputValidation(tempHW, 0, 10);
+                if (tempHW == 0)
+                    moreHW = false;
+                else {
+                    S[nS].HW[S[nS].nHW] = tempHW;
+                    S[nS].nHW++;
+                }
+            } while (moreHW);
+            std::cout << "\nEgzamino balas:\n";
+            std::cin >> S[nS].exam;
+            numberInputValidation(S[nS].exam, 1, 10);
+        }
         nS++;
-
-        std::cout << "Ivesti dar vieno studento duomenis? (y/n) ";
+        std::cout << "\nAr norite ivesti dar vieno studento duomenis? (t/n) ";
         std::cin >> moreStudents;
-        optionalInputValidation(moreStudents, 'y', 'n');
-    } while (moreStudents != 'n');
+        optionalInputValidation(moreStudents, 't', 'n');
+    } while (moreStudents == 't');
 
-    std::cout << "Jeigu norite galutini bala skaiciuoti pagal namu darbu mediana, iveskite m, jeigu pagal vidurki - v. (m/v) ";
+    std::cout << "\nJeigu norite galutini bala skaiciuoti pagal namu darbu mediana, iveskite m, jeigu pagal vidurki - v. (m/v) ";
     std::cin >> finalType;
     optionalInputValidation(finalType, 'm', 'v');
 
-    std::cout << "\nPavarde\tVardas\tGalutinis ";
+    std::cout << "\nPavarde\t\tVardas\t\tGalutinis ";
     finalType == 'm' ? std::cout << "(Med.)\n" : std::cout << "(Vid.)\n" ;
     for (int i = 0; i < nS; i ++) {
         finalGrade(S, i, finalType);
-        std::cout << S[i].surname << "\t" << S[i].name << "\t" << std::fixed << std::setprecision(2) << S[i].final << "\n";
+        std::cout << S[i].surname << "\t\t" << S[i].name << "\t\t" << std::fixed << std::setprecision(2) << S[i].final << "\n";
     }
     return 0;
 }
