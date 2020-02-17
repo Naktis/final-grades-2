@@ -51,7 +51,7 @@ double median (int* HW, int n) {
 
 double finalGrade (Student* S, int i, char type){
     double hw;
-    if (S[i].nHW)   // Check if the homework array isn't empty
+    if (S[i].nHW)   // Calculate the homework grade only if the homework array isn't empty
         type == 'm' ? hw = median(S[i].HW, S[i].nHW) : hw = average(S[i].HW, S[i].nHW);
     else hw = 0;
     return (0.4 * hw + 0.6 * S[i].exam);
@@ -155,7 +155,7 @@ int main () {
         std::cout << "\nAr norite ivesti dar vieno studento duomenis? (t/n) ";
         std::cin >> moreStudents;                // Read and validate if it's wanted to enter data of more students
         optionalInputValidation(moreStudents, 't', 'n');
-    } while (moreStudents == 't');
+    } while (moreStudents == 't');               // Continue the loop, if there's more student data
 
     std::cout << "\nJeigu norite galutini bala skaiciuoti pagal namu darbu mediana, iveskite m, jeigu pagal vidurki - v. (m/v) ";
     std::cin >> finalType;                      // Read and validate the entered type of final grade (average or median)
