@@ -30,7 +30,7 @@ Programa realizuota naudojant C-masyvus (*array.cpp*) ir vektorius (*vector.cpp*
 
 ------------
 Augustina Šareikaitė
-Informacinių sistemų inžinerija
-I kursas, I grupė
+
+Informacinių sistemų inžinerija, I kursas, I grupė
 
 Vilniaus universitetas
