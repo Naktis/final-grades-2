@@ -1,8 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
-#define MAXS 50   // Maximum number of students
-#define MAXHW 20  // Maximum number of homework grades
+#define MAXS 200   // Maximum number of students
+#define MAXHW 50  // Maximum number of homework grades
 
 struct Student {
     std::string name, surname;
@@ -80,14 +80,14 @@ void generateGrades (Student* S, int i) {
     std::cout << "\nGeneruojami namu darbu balai.\n\n";
     srand(time(NULL));
     do {
-        S[i].HW[S[i].nHW] = (double)rand ()/ RAND_MAX * 10;
+        S[i].HW[S[i].nHW] = (double)rand ()/ RAND_MAX * 9 + 1;
         std::cout << "Sugeneruotas balas: " << S[i].HW[S[i].nHW] << "\nGeneruoti dar viena n.d. bala? (t/n) ";
         S[i].nHW ++;
         std::cin >> moreGrades;
         optionalInputValidation(moreGrades, 't', 'n');
     } while (moreGrades == 't');
 
-    S[i].exam = (double)rand ()/ RAND_MAX * 10;
+    S[i].exam = (double)rand ()/ RAND_MAX * 9 + 1;
     std::cout << "Sugeneruotas egzamino balas: " << S[i].exam << "\n";
 }
 
@@ -105,9 +105,9 @@ int main () {
         std::cout << "\nAr norite n.d. ir egzamino balus generuoti atsitiktinai? (t/n) ";
         std::cin >> isHWRandom;
         optionalInputValidation(isHWRandom, 't', 'n');
-        if (isHWRandom == 't') {
+        if (isHWRandom == 't')
             generateGrades(S, nS);
-        } else {
+        else {
             std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
             do {
                 std::cin >> tempHW;
@@ -139,5 +139,6 @@ int main () {
         finalGrade(S, i, finalType);
         std::cout << S[i].surname << "\t\t" << S[i].name << "\t\t" << std::fixed << std::setprecision(2) << S[i].final << "\n";
     }
+    delete[] S;
     return 0;
 }
