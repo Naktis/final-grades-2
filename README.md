@@ -1,6 +1,7 @@
 # Galutinių studentų balų skaičiuoklė v.1
 
 C++ kalba parašyta pirminė programos versija, skaičiuojanti galutinius studentų balus pagal formulę
+
 ***Galutinis = 0.4 * namų darbai + 0.6 * egzaminas***
 
 Programos naudotojas gali:
@@ -30,7 +31,7 @@ Programa realizuota naudojant C-masyvus (*array.cpp*) ir vektorius (*vector.cpp*
 
 ------------
 Augustina Šareikaitė
-Informacinių sistemų inžinerija
-I kursas, I grupė
+
+Informacinių sistemų inžinerija, I kursas, I grupė
 
 Vilniaus universitetas
