@@ -16,18 +16,22 @@ Programa realizuota naudojant C-masyvus (*array.cpp*) ir vektorius (*vector.cpp*
 
 
 ## Testavimas
+
 | Atlikti testai | array.cpp | vector.cpp |
 |--|--|--|
-| 3 studentai, atsitiktinis generavimas, mediana |:heavy_check_mark:| :heavy_check_mark: |
-| 12 studentų, atsitiktinis generavimas, vidurkis | :heavy_check_mark: | :heavy_check_mark: |
-| 1 studentas, atsitiktinis generavimas, vidurkis |:heavy_check_mark:  | :heavy_check_mark: |
-| Įvedant balus įvedamas ne skaičius | :heavy_check_mark: | :heavy_check_mark: |
-| Taip/ne pasirinkimo vietoje įvesta ne 't' arba 'n' | :heavy_check_mark: | :heavy_check_mark: |
-| 4 studentai, 0 namų darbų, vidurkis| :heavy_check_mark: | :heavy_check_mark: |
-| 2 studentai, 0 namų darbų, mediana | :heavy_check_mark: | :heavy_check_mark: |
-| Vardas įvestas su netinkamu elementu (ne raide) | :heavy_check_mark: | :heavy_check_mark: |
-| 2 studentai, rankinė įvestis, mediana | :heavy_check_mark: | :heavy_check_mark: |
-| 3 studentai, rankinė įvestis, vidurkis | :heavy_check_mark: | :heavy_check_mark: |
+| Įvestas balas nėra skaičius | *Įvesties kartojimas* | *Įvesties kartojimas* |
+| Įvestas balas yra neigiamas skaičius | *Įvesties kartojimas* | *Įvesties kartojimas* 
+| Įvestas balas yra didesnis už 10 | *Įvesties kartojimas* | *Įvesties kartojimas* |
+| Taip/ne pasirinkimo vietoje įvesta ne 't' arba 'n' | *Įvesties kartojimas* | *Įvesties kartojimas* |
+| Įvestame varde yra neleidžiamų simbolių (ne raidė) | *Įvesties kartojimas* | *Įvesties kartojimas* |
+| 3 studentai, atsitiktinis generavimas, mediana | *Rezultatai teisingi* | *Rezultatai teisingi* |
+| 12 studentų, atsitiktinis generavimas, vidurkis | *Rezultatai teisingi* | *Rezultatai teisingi* |
+| 1 studentas, atsitiktinis generavimas, vidurkis | *Rezultatai teisingi*  | *Rezultatai teisingi* |
+| 4 studentai, 0 namų darbų, vidurkis| *Rezultatai teisingi* |*Rezultatai teisingi* |
+| 2 studentai, 0 namų darbų, mediana | *Rezultatai teisingi* | *Rezultatai teisingi* |
+| 2 studentai, rankinė įvestis, mediana | *Rezultatai teisingi* | *Rezultatai teisingi* |
+| 3 studentai, rankinė įvestis, vidurkis | *Rezultatai teisingi* | *Rezultatai teisingi* |
+
 
 ------------
 Augustina Šareikaitė
