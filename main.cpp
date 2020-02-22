@@ -59,7 +59,16 @@ double finalGrade (Student* S, char type){
 // to reenter data, if it doesn't
 void optionalInputValidation (char& input, char option1, char option2) {
     while (!(input == option1 || input == option2)) {
-        std::cout << "Balas neirasytas. Pasirinkite viena is variantu (" << option1 << "/" << option2 << ") \n";
+        std::cout << "Klaida. Pasirinkite viena is variantu (" << option1 << "/" << option2 << ") \n";
+        std::cin.clear();
+        std::cin.ignore(256,'\n');
+        std::cin >> input;
+    }
+}
+
+void optionalInputValidation (char& input, char option1, char option2, char option3) {
+    while (!(input == option1 || input == option2 || input == option3)) {
+        std::cout << "Klaida. Pasirinkite viena is variantu (" << option1 << "/" << option2  << "/" << option3 << ") \n";
         std::cin.clear();
         std::cin.ignore(256,'\n');
         std::cin >> input;
@@ -69,29 +78,11 @@ void optionalInputValidation (char& input, char option1, char option2) {
 // Function which checks if the input is number-only and asks to reenter data, if it's not
 void numberInputValidation (int& input, int lowest, int highest) {
     while (input < lowest || input > highest || std::cin.fail()) {
-        std::cout << "Balas neirasytas. Pasirinkite skaiciu is intervalo [" << lowest << " ; " << highest << "] \n";
+        std::cout << "Klaida. Pasirinkite skaiciu is intervalo [" << lowest << " ; " << highest << "] \n";
         std::cin.clear();
         std::cin.ignore(256,'\n');
         std::cin >> input;
     }
-}
-
-// Function which checks if the entered string contains any non-letter characters, according to the ASCII table.
-// If it does, the user is asked to reenter data
-void stringInputValidation (std::string &input) {
-    bool onlyChars;
-    do {
-        onlyChars = true;
-        for (int i = 0; i < input.length(); i ++)
-            if (!((input[i] >= 65 && input[i] <= 90) || (input[i] >= 97 && input[i] <= 122))) {
-                onlyChars = false;
-                std::cout << "Zodis neirasytas, nes jame yra neleistinu simboliu. Iveskite zodi dar karta. \n";
-                std::cin.clear();
-                std::cin.ignore(256,'\n');
-                std::cin >> input;
-                break;
-            }
-    } while (!onlyChars);
 }
 
 void generateGrades (Student* S) {
@@ -112,48 +103,54 @@ void generateGrades (Student* S) {
 int main () {
     std::vector<Student> S;                    // Vector for entered student data
     char finalType;                            // Can be equal to 'm' (median) or 'v' (average)
-    char moreStudents = 'n', isHWRandom = 'n'; // Variables for input validation
-    bool moreHW;
-    int tempHW;
+    char inputType;                            // Variable for input validation
 
-    do {
-        Student temp;                           // Temporary structure to be filled in before pushing back to the vector
-        moreHW = true;
-        std::cout << "\nStudento pavarde, vardas:\n";
-        std::cin >> temp.surname;               // Read and validate student's surname and name
-        stringInputValidation(temp.surname);
-        std::cin >> temp.name;
-        stringInputValidation(temp.name);
-        
-        std::cout << "\nAr norite n.d. ir egzamino balus generuoti atsitiktinai? (t/n) ";
-        std::cin >> isHWRandom;                 // Read and validate if it's wanted to randomize grades
-        optionalInputValidation(isHWRandom, 't', 'n');
-        if (isHWRandom == 't')
-            generateGrades(&temp);              // Generate homework and exam grades
-        else {
-            std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
-            do {
-                std::cin >> tempHW;             // Read and validate the entered homework grade
-                numberInputValidation(tempHW, 0, 10);
-                if (tempHW == 0)
-                    moreHW = false;             // Terminate the loop, if 0 is entered
-                else temp.HW.push_back(tempHW); // Add the entered grade to the homework vector
-            } while (moreHW);                   // Continue the loop, if it's wanted to enter more h.w. grades
-            std::cout << "\nEgzamino balas:\n";
-            std::cin >> temp.exam;              // Read and validate the entered exam grade
-            numberInputValidation(temp.exam, 1, 10);
-        }
-        S.push_back(temp);                      // Add the structure to the vector of student data
+    std::cout << "Pasirinkite studentu balu ivesties buda:\n";
+    std::cout<< "Skaitymas is failo:\t  f\nAtsitiktinis generavimas: g\nRankinis ivedimas:\t  r\n"; 
+    std::cin >> inputType;
+    optionalInputValidation(inputType, 'f', 'g', 'r');
 
-        std::cout << "\nAr norite ivesti dar vieno studento duomenis? (t/n) ";
-        std::cin >> moreStudents;               // Read and validate if it's wanted to enter data of more students
-        optionalInputValidation(moreStudents, 't', 'n');
-    } while (moreStudents == 't');              // Continue the loop, if there's more student data
-    S.shrink_to_fit();                          // Free unused space that the vector has reserved
-
-    std::cout << "\nJeigu norite galutini bala skaiciuoti pagal namu darbu mediana, iveskite m, jeigu pagal vidurki - v. (m/v) ";
+    std::cout << "\nPasirinkite namu darbu skaiciavimo buda:";
+    std::cout << "\nMediana:\tm\nVidurkis:\tv\n";
     std::cin >> finalType;                      // Read and validate the entered type of final grade (average or median)
     optionalInputValidation(finalType, 'm', 'v');
+
+    if (inputType == 'r' || inputType == 'g') {
+        char moreStudents = 'n';                // Variables for input validation
+        bool moreHW;
+        int tempHW;
+
+        do {
+            Student temp;                           // Temporary structure to be filled in before pushing back to the vector
+            moreHW = true;
+            std::cout << "\nStudento pavarde, vardas:\n";
+            std::cin >> temp.surname >> temp.name;  // Read and validate student's surname and name
+
+            if (inputType == 'g')
+                generateGrades(&temp);              // Generate homework and exam grades
+            else {
+                std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
+                do {
+                    std::cin >> tempHW;             // Read and validate the entered homework grade
+                    numberInputValidation(tempHW, 0, 10);
+                    if (tempHW == 0)
+                        moreHW = false;             // Terminate the loop, if 0 is entered
+                    else temp.HW.push_back(tempHW); // Add the entered grade to the homework vector
+                } while (moreHW);                   // Continue the loop, if it's wanted to enter more h.w. grades
+                std::cout << "\nEgzamino balas:\n";
+                std::cin >> temp.exam;              // Read and validate the entered exam grade
+                numberInputValidation(temp.exam, 1, 10);
+            }
+            S.push_back(temp);                      // Add the structure to the vector of student data
+
+            std::cout << "\nAr norite ivesti dar vieno studento duomenis? (t/n) ";
+            std::cin >> moreStudents;               // Read and validate if it's wanted to enter data of more students
+            optionalInputValidation(moreStudents, 't', 'n');
+        } while (moreStudents == 't');              // Continue the loop, if there's more student data
+        S.shrink_to_fit();                          // Free unused space that the vector has reserved
+    } else if (inputType == 'f') {
+        // File reading
+    }
 
     // Calculate final grades and print results
     std::cout << "\nPavarde\t\tVardas\t\tGalutinis ";
