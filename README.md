@@ -15,8 +15,6 @@ Programos naudotojas gali:
  - Namų darbų įvedimo/generavimo metu nuspręsti, kiek jų bus įvesta/sugeneruota
  - Įvedus vieno studento duomenis pasirinkti, ar reikia įvesti daugiau studentų duomenų
 
-
-
 ------------
 Augustina Šareikaitė
 
