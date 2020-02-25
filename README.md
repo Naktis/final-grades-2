@@ -1,4 +1,4 @@
-# Galutinių studentų balų skaičiuoklė v.1
+# Galutinių studentų balų skaičiuoklė
 
 C++ kalba parašyta antroji programos versija, skaičiuojanti galutinius studentų balus pagal formulę
 
