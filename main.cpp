@@ -52,8 +52,8 @@ double average (int* HW, int n) {
 
 double median (int *HW, int n) {
     double m;
-    std::sort(HW, HW + n - 1);
-    n % 2 == 0 ? (m = 1.00 * (*(HW + (n / 2) - 1) + *(HW + (n / 2))) / 2) : m = *(HW + (n / 2) - 1);
+    std::sort(HW, HW + n);
+    n % 2 == 0 ? (m = 1.00 * (HW[n / 2 - 1] + HW[n / 2]) / 2) : m = HW[n / 2];
     return m;
 }
 
@@ -116,10 +116,11 @@ void generateGrades (Student* S) {
 void writeToFile(std::vector<Student> &S, char finalType) {
     std::ofstream fr ("rezultatai.txt");                // Open the results' file
     
-    fr << "Vardas\t\t\tPavarde\t\t\tGalutinis ";        // Print header text
+    fr << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis ";        // Print header text
     finalType == 'm' ? fr << "(Med.)\n" : fr << "(Vid.)\n";
+    fr << "--------------------------------------------------------\n";
     for (int i = 0; i < S.size(); i ++)                 // Print students' names, surnames and final grades
-        fr << std::setw(10) << std::left << S[i].name << "\t\t" << S[i].surname << "\t\t" << std::fixed << std::setprecision(2) << S[i].final << "\n";
+        fr << std::setw(20) << std::left << S[i].name << std::setw(20) << S[i].surname << std::fixed << std::setprecision(2) << S[i].final << "\n";
 
     fr.close();                                         // Close the results' file
 }
