@@ -12,15 +12,13 @@ void readFile (std::vector<Student> &S) {
     std::ifstream fd ("kursiokai.txt");     // Open the file of students' data
     int numOfHW = 0;
 
-    if (fd.good()) {
-        std::string firstLine;
-        std::getline(fd, firstLine);        // Read the first line of the file
-        std::stringstream ss (firstLine);   // Make it readable by copying it into a stringstream
-        std::string str;
-        while (ss >> str)                   // Count the number of separate strings until the line reaches the end
-            numOfHW ++;
-        numOfHW -= 3;                       // Ignore the name, surname and exam strings
-    }
+    std::string firstLine;
+    std::getline(fd, firstLine);            // Read the first line of the file
+    std::stringstream ss (firstLine);       // Make it readable by copying it into a stringstream
+    std::string str;
+    while (ss >> str)                       // Count the number of separate strings until the line reaches the end
+        numOfHW ++;
+    numOfHW -= 3;                           // Ignore the name, surname and exam strings
 
     Student temp;
     int tempHW;
@@ -59,13 +57,18 @@ double finalGrade (Student* S, char type){
     return (0.4 * hw + 0.6 * S->exam);
 }
 
+template <typename T>
+void reenterInput(T& input) {
+    std::cin.clear();
+    std::cin.ignore(256,'\n');
+    std::cin >> input;
+}
+
 // Functions which check if the input contains one of the asked options and asks to to reenter data, if it doesn't
 void optionalInputValidation (char& input, char option1, char option2) {
     while (!(input == option1 || input == option2)) {
         std::cout << "Klaida. Pasirinkite viena is variantu (" << option1 << "/" << option2 << ") \n";
-        std::cin.clear();
-        std::cin.ignore(256,'\n');
-        std::cin >> input;
+        reenterInput(input);
     }
 }
 
@@ -73,9 +76,7 @@ void optionalInputValidation (char& input, char option1, char option2) {
 void optionalInputValidation (char& input, char option1, char option2, char option3) {
     while (!(input == option1 || input == option2 || input == option3)) {
         std::cout << "Klaida. Pasirinkite viena is variantu (" << option1 << "/" << option2  << "/" << option3 << ") \n";
-        std::cin.clear();
-        std::cin.ignore(256,'\n');
-        std::cin >> input;
+        reenterInput(input);
     }
 }
 
@@ -83,9 +84,7 @@ void optionalInputValidation (char& input, char option1, char option2, char opti
 void numberInputValidation (int& input, int lowest, int highest) {
     while (input < lowest || input > highest || std::cin.fail()) {
         std::cout << "Klaida. Pasirinkite skaiciu is intervalo [" << lowest << " ; " << highest << "] \n";
-        std::cin.clear();
-        std::cin.ignore(256,'\n');
-        std::cin >> input;
+        reenterInput(input);
     }
 }
 
@@ -110,11 +109,18 @@ void generateGrades (Student* S) {
 void writeToFile(std::vector<Student> &S, char finalType) {
     std::ofstream fr ("rezultatai.txt");                // Open the results' file
     
-    fr << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis ";        // Print header text
+    fr << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis "; // Print header text
     finalType == 'm' ? fr << "(Med.)\n" : fr << "(Vid.)\n";
     fr << "--------------------------------------------------------\n";
     for (int i = 0; i < S.size(); i ++)                 // Print students' names, surnames and final grades
         fr << std::setw(20) << std::left << S[i].name << std::setw(20) << S[i].surname << std::fixed << std::setprecision(2) << S[i].final << "\n";
 
+    try {
+        if (fr.good())                                  // If writing was successful, print a message
+            std::cout << "\nRezulatai sekmingai irasyti i faila rezultatai.txt";
+        else throw fr.rdstate();                        // Set error state flag as an exception code
+    } catch (int errorCode) {
+        std::cout << "Ivyko klaida. Kodas: " << errorCode << "\n"; // Print error code
+    }
     fr.close();                                         // Close the results' file
 }

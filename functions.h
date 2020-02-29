@@ -4,6 +4,8 @@
 #include <vector>
 #include "structure.h"
 
+template <typename T>
+void reenterInput(T&);
 void readFile (std::vector<Student>&);
 double average (int*, int);
 double median (int*, int);

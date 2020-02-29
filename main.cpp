@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 #include "structure.h"
 #include "functions.h"
@@ -14,6 +15,19 @@ int main () {
     std::cout<< "Skaitymas is failo:\t  f\nAtsitiktinis generavimas: g\nRankinis ivedimas:\t  r\n"; 
     std::cin >> inputType;                      // Read and validate the entered input type
     optionalInputValidation(inputType, 'f', 'g', 'r');
+
+    if (inputType == 'f') {
+        try {
+            std::ifstream in ("kursiokai.txt");
+            if (!in.good())                     // Check if data file exists
+                throw 404;
+            else in.close();
+        } catch (int exception) {               // If it doesn't, let user choose another input option
+            std::cout << "Duomenu failas neegzistuoja. Pasirinkite kita varianta (g/r)\n";
+            reenterInput(inputType);
+            optionalInputValidation(inputType, 'g', 'r');
+        }
+    }
 
     std::cout << "\nPasirinkite namu darbu skaiciavimo buda:";
     std::cout << "\nMediana:\tm\nVidurkis:\tv\n";
@@ -65,6 +79,5 @@ int main () {
     std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
 
     writeToFile(S, finalType);
-    std::cout << "\nRezulatai irasyti i faila rezultatai.txt";
     return 0;
 }
