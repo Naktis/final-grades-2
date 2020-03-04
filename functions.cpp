@@ -8,28 +8,32 @@
 
 #include "functions.h"
 
-void readFile (std::vector<Student> &S) {
-    std::ifstream fd ("kursiokai.txt");     // Open the file of students' data
+void readFile (std::vector<Student> &S, std::string fileName) {
+    std::ifstream fd (fileName);     // Open the file of students' data
     int numOfHW = 0;
 
-    std::string firstLine;
-    std::getline(fd, firstLine);            // Read the first line of the file
-    std::stringstream ss (firstLine);       // Make it readable by copying it into a stringstream
+    std::string header;
+    std::getline(fd, header);            // Read the first line of the file
+    std::stringstream firstRow (header);    // Make it readable by copying it into a stringstream
     std::string str;
-    while (ss >> str)                       // Count the number of separate strings until the line reaches the end
+    while (firstRow >> str)                 // Count the number of separate strings until the line reaches the end
         numOfHW ++;
     numOfHW -= 3;                           // Ignore the name, surname and exam strings
 
     Student temp;
     int tempHW;
+    std::string row;
+    std::stringstream dataRow (row);
     do {                                    // Read single student's data into a temporary structure
-        fd >> temp.name >> temp.surname;
+        std::getline(fd, row);
+        std::stringstream dataRow (row);
+        dataRow >> temp.name >> temp.surname;
         temp.HW.clear();                    // Empty the temporary homework vector and fill it with grades from the file
         for (int i = 0; i < numOfHW; i ++) {
-            fd >> tempHW;
+            dataRow >> tempHW;
             temp.HW.push_back(tempHW);
         }
-        fd >> temp.exam;
+        dataRow >> temp.exam;
         S.push_back(temp);                  // Push the temporary structure to the vector of structures
     } while (!fd.eof());                    // Continue reading until the end of file is reached
 	fd.close();                             // Close the file
@@ -49,12 +53,25 @@ double median (int *HW, int n) {
     return m;
 }
 
-double finalGrade (Student* S, char type){
+double finalGrade (Student& S, char type){
     double hw;
-    if (!S->HW.empty())  // Calculate the homework grade only if the homework vector isn't empty
-        type == 'm' ? hw = median(&S->HW[0], S->HW.size()) : hw = average(&S->HW[0], S->HW.size());
+    if (S.HW.empty())  // Calculate the homework grade only if the homework vector isn't empty
+        type == 'm' ? hw = median(&S.HW[0], S.HW.size()) : hw = average(&S.HW[0], S.HW.size());
     else hw = 0;
-    return (0.4 * hw + 0.6 * S->exam);
+    return (0.4 * hw + 0.6 * S.exam);
+}
+
+void makeGroups (std::vector<Student> &S, std::vector<Student> &HL, std::vector<Student> &LL) {
+    while (!S.empty()) {
+        if (S.back().final < 5.0)
+            LL.push_back(S.back());
+        else HL.push_back(S.back());
+        S.pop_back();
+    }
+    LL.shrink_to_fit();
+    HL.shrink_to_fit();
+    S.clear();
+    S.shrink_to_fit();
 }
 
 template <typename T>
@@ -88,39 +105,69 @@ void numberInputValidation (int& input, int lowest, int highest) {
     }
 }
 
-void generateGrades (Student* S) {
-    char moreGrades;
-    using hrClock = std::chrono::high_resolution_clock; // System clock for random seed
+void generateGradesManually (Student* S) {
+    using hrClock = std::chrono::high_resolution_clock;
     std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count())); // Random number generator
-    std::uniform_int_distribution<int> dist(1, 10);     // Data type and interval for a random number
+    std::uniform_int_distribution<int> random10(1, 10);
 
+    char moreGrades;
     std::cout << "\nGeneruojami namu darbu balai.\n\n";
     do {
-        S->HW.push_back(dist(mt));                      // Generate a random h.w. grade between 1 and 10
+        S->HW.push_back(random10(mt));                      // Generate a random h.w. grade between 1 and 10
         std::cout << "Sugeneruotas balas: " << S->HW.back() << "\nGeneruoti dar viena n.d. bala? (t/n) ";
         std::cin >> moreGrades;
         optionalInputValidation(moreGrades, 't', 'n');
     } while (moreGrades == 't');
 
-    S->exam = dist(mt);                                 // Generate a random exam grade between 1 and 10
+    S->exam = random10(mt);                                 // Generate a random exam grade between 1 and 10
     std::cout << "Sugeneruotas egzamino balas: " << S->exam << "\n";
 }
 
-void writeToFile(std::vector<Student> &S, char finalType) {
-    std::ofstream fr ("rezultatai.txt");                // Open the results' file
+void createDataFile (int numOfStudents) {
+    using hrClock = std::chrono::high_resolution_clock;
+    std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count())); // Random number generator
+    std::uniform_int_distribution<int> random10(1, 10);
+    std::uniform_int_distribution<int> random20(1, 20);
+    int numOfHW = random20(mt);                     // Generate the number of HW grades  
+
+    std::ostringstream fileName;
+    fileName << "kursiokai" << numOfStudents << ".txt"; // Create data file name
+    std::ofstream add (fileName.str());                 // Open data file
+
+    // Print header text
+    add << std::setw(20) << std::left << "Vardas" << std::setw(21) << "Pavarde";
+    for (int i = 1; i <= numOfHW; i ++)
+        add << "ND" << std::setw(8) << std::left << i;
+    add << "Egz.\n";
+
+    // Print student data text
+    int lastGenerated = 0, grade;
+    for (int i = 1; i <= numOfStudents; i ++) {
+        add << "Vardas" << std::setw(14) << std::left << i << "Pavarde" << std::setw(14) << std::left << i;
+        for (int j = 0; j <= numOfHW; j ++) {
+            grade = random10(mt);
+            add << std::setw(10) << std::left << grade; // Generate an exam grade
+            lastGenerated = grade;
+        }
+        add << "\n";
+    }
+    add.close();
+}
+
+void writeToFile(std::vector<Student> &S, char finalType, std::string fileName) {
+    std::ofstream fr (fileName);                // Open the results' file
     
     fr << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis "; // Print header text
     finalType == 'm' ? fr << "(Med.)\n" : fr << "(Vid.)\n";
     fr << "--------------------------------------------------------\n";
-    for (int i = 0; i < S.size(); i ++)                 // Print students' names, surnames and final grades
+    for (int i = 0; i < S.size(); i ++)         // Print students' names, surnames and final grades
         fr << std::setw(20) << std::left << S[i].name << std::setw(20) << S[i].surname << std::fixed << std::setprecision(2) << S[i].final << "\n";
 
     try {
-        if (fr.good())                                  // If writing was successful, print a message
-            std::cout << "\nRezulatai sekmingai irasyti i faila rezultatai.txt";
-        else throw fr.rdstate();                        // Set error state flag as an exception code
+        if (!fr.good())                         // If an error flag was raised during the writing
+            throw fr.rdstate();                 // Set it as an exception code
     } catch (int errorCode) {
         std::cout << "Ivyko klaida. Kodas: " << errorCode << "\n"; // Print error code
     }
-    fr.close();                                         // Close the results' file
+    fr.close();
 }
