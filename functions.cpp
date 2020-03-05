@@ -13,7 +13,7 @@ void readFile (std::vector<Student> &S, std::string fileName) {
     int numOfHW = 0;
 
     std::string header;
-    std::getline(fd, header);            // Read the first line of the file
+    std::getline(fd, header);               // Read the first line of the file
     std::stringstream firstRow (header);    // Make it readable by copying it into a stringstream
     std::string str;
     while (firstRow >> str)                 // Count the number of separate strings until the line reaches the end
@@ -22,20 +22,16 @@ void readFile (std::vector<Student> &S, std::string fileName) {
 
     Student temp;
     int tempHW;
-    std::string row;
-    std::stringstream dataRow (row);
-    do {                                    // Read single student's data into a temporary structure
-        std::getline(fd, row);
-        std::stringstream dataRow (row);
-        dataRow >> temp.name >> temp.surname;
+    while (fd >> temp.name) {               // Continue reading until the end of file is reached (raised error flag)
+        fd >> temp.surname;
         temp.HW.clear();                    // Empty the temporary homework vector and fill it with grades from the file
         for (int i = 0; i < numOfHW; i ++) {
-            dataRow >> tempHW;
+            fd >> tempHW;
             temp.HW.push_back(tempHW);
         }
-        dataRow >> temp.exam;
+        fd >> temp.exam;
         S.push_back(temp);                  // Push the temporary structure to the vector of structures
-    } while (!fd.eof());                    // Continue reading until the end of file is reached
+    }
 	fd.close();                             // Close the file
 }
 

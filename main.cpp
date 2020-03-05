@@ -10,9 +10,11 @@
 int main () {
     using hrClock = std::chrono::high_resolution_clock;
     std::vector<Student> S;                    // Vector for all student data
-    std::vector<Student> HL, LL;               // Vectors of high level (HL) and low level (LL) student data
+    std::vector<Student> HL, LL;               // Vectors of high level (HL) and low level (LL) students
     char finalType;                            // Can be equal to 'm' (median) or 'v' (average)
     char inputType;                            // Can be equal to 'f' (file), 'g' (generate) or 'r' (manual)
+    S.reserve(10000000);
+
     double createTime[5];
     double readTime, sortTime, printTime;
     hrClock::time_point start, end;
@@ -111,7 +113,7 @@ int main () {
     // Calculate final grades
     for (int i = 0; i < S.size(); i ++)
         S[i].final = finalGrade(S[i], finalType);
-        
+
     start = hrClock::now(); 
     makeGroups(S, HL, LL);
     end = hrClock::now();
