@@ -9,9 +9,9 @@
 #include "functions.h"
 
 void readFile (std::vector<Student> &S, std::string fileName) {
-    std::ifstream fd (fileName);     // Open the file of students' data
-    int numOfHW = 0;
+    std::ifstream fd (fileName);
 
+    int numOfHW = 0;
     std::string header;
     std::getline(fd, header);               // Read the first line of the file
     std::stringstream firstRow (header);    // Make it readable by copying it into a stringstream
@@ -21,18 +21,23 @@ void readFile (std::vector<Student> &S, std::string fileName) {
     numOfHW -= 3;                           // Ignore the name, surname and exam strings
 
     Student temp;
+    temp.HW.reserve(numOfHW);
+
     int tempHW;
-    while (fd >> temp.name) {               // Continue reading until the end of file is reached (raised error flag)
-        fd >> temp.surname;
+    std::string row;
+    std::stringstream dataRow;
+    while (std::getline(fd, row)) {         // Continue reading until the end of file is reached (raised error flag)
+        dataRow.str(row);
+        dataRow >> temp.name >> temp.surname;
         temp.HW.clear();                    // Empty the temporary homework vector and fill it with grades from the file
         for (int i = 0; i < numOfHW; i ++) {
-            fd >> tempHW;
+            dataRow >> tempHW;
             temp.HW.push_back(tempHW);
         }
-        fd >> temp.exam;
+        dataRow >> temp.exam;
         S.push_back(temp);                  // Push the temporary structure to the vector of structures
     }
-	fd.close();                             // Close the file
+	fd.close();
 }
 
 double average (int* HW, int n) {
@@ -49,25 +54,27 @@ double median (int *HW, int n) {
     return m;
 }
 
-double finalGrade (Student& S, char type){
+double finalGrade (Student* S, char type){
     double hw;
-    if (S.HW.empty())  // Calculate the homework grade only if the homework vector isn't empty
-        type == 'm' ? hw = median(&S.HW[0], S.HW.size()) : hw = average(&S.HW[0], S.HW.size());
+    if (!S->HW.empty())  // Calculate the homework grade only if the homework vector isn't empty
+        type == 'm' ? hw = median(&S->HW[0], S->HW.size()) : hw = average(&S->HW[0], S->HW.size());
     else hw = 0;
-    return (0.4 * hw + 0.6 * S.exam);
+    return (0.4 * hw + 0.6 * S->exam);
 }
 
-void makeGroups (std::vector<Student> &S, std::vector<Student> &HL, std::vector<Student> &LL) {
-    while (!S.empty()) {
-        if (S.back().final < 5.0)
-            LL.push_back(S.back());
-        else HL.push_back(S.back());
-        S.pop_back();
-    }
-    LL.shrink_to_fit();
-    HL.shrink_to_fit();
-    S.clear();
-    S.shrink_to_fit();
+void makeGroups (std::vector<Student> &S, std::vector<Student> &GS) {
+    // Sort students by their final grades
+    std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
+
+    int numOfBadStudents = 0;
+    while (S[numOfBadStudents].final < 5.0)     // Count the number of students with final grade < 5
+        numOfBadStudents ++;
+
+    GS.reserve(S.size() - numOfBadStudents);    // Increase required capacity for the "good students" vector
+    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS)); // Copy "good students" into another vector
+
+    S.resize(numOfBadStudents);                 // Leave vector with the "bad students" data only
+    S.shrink_to_fit();                          // Shrink it to save memory
 }
 
 template <typename T>
@@ -124,46 +131,64 @@ void createDataFile (int numOfStudents) {
     std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count())); // Random number generator
     std::uniform_int_distribution<int> random10(1, 10);
     std::uniform_int_distribution<int> random20(1, 20);
-    int numOfHW = random20(mt);                     // Generate the number of HW grades  
+    int numOfHW = random20(mt);                     // Generate the number of HW grades 
 
     std::ostringstream fileName;
     fileName << "kursiokai" << numOfStudents << ".txt"; // Create data file name
     std::ofstream add (fileName.str());                 // Open data file
 
     // Print header text
-    add << std::setw(20) << std::left << "Vardas" << std::setw(21) << "Pavarde";
-    for (int i = 1; i <= numOfHW; i ++)
-        add << "ND" << std::setw(8) << std::left << i;
-    add << "Egz.\n";
+    std::ostringstream row ("");
+    row << std::setw(20) << std::left << "Vardas" << std::setw(21) << "Pavarde";
+
+    for (int i = 1; i <= numOfHW; i ++) 
+        row << "ND" << std::setw(8) << std::left << i;
+    row << "Egz.\n";
+    add << row.str();
 
     // Print student data text
     int lastGenerated = 0, grade;
     for (int i = 1; i <= numOfStudents; i ++) {
-        add << "Vardas" << std::setw(14) << std::left << i << "Pavarde" << std::setw(14) << std::left << i;
+        row.str("");
+        row << "Vardas" << std::setw(14) << std::left << i << "Pavarde" << std::setw(14) << std::left << i;
         for (int j = 0; j <= numOfHW; j ++) {
             grade = random10(mt);
-            add << std::setw(10) << std::left << grade; // Generate an exam grade
+            row << std::setw(10) << std::left << grade; // Generate an exam grade
             lastGenerated = grade;
         }
-        add << "\n";
+        row << "\n";
+        add << row.str();
     }
     add.close();
 }
 
+void sort (std::vector<Student> &S, std::vector<Student> &GS, char sortType) {
+    if (sortType == 'v') {
+        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
+        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
+    } else if (sortType == 'p') {
+        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+    }
+}
+
 void writeToFile(std::vector<Student> &S, char finalType, std::string fileName) {
     std::ofstream fr (fileName);                // Open the results' file
-    
-    fr << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis "; // Print header text
+    std::ostringstream row ("");                // Create empty row stringstream
+
+    // Print header
+    row << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis ";
+    fr << row.str();
+
     finalType == 'm' ? fr << "(Med.)\n" : fr << "(Vid.)\n";
     fr << "--------------------------------------------------------\n";
-    for (int i = 0; i < S.size(); i ++)         // Print students' names, surnames and final grades
-        fr << std::setw(20) << std::left << S[i].name << std::setw(20) << S[i].surname << std::fixed << std::setprecision(2) << S[i].final << "\n";
 
-    try {
-        if (!fr.good())                         // If an error flag was raised during the writing
-            throw fr.rdstate();                 // Set it as an exception code
-    } catch (int errorCode) {
-        std::cout << "Ivyko klaida. Kodas: " << errorCode << "\n"; // Print error code
+    // Print students' data
+    for (int i = 0; i < S.size(); i ++) {
+        row.str("");        // Empty the row stream and add single student's data
+        row << std::setw(20) << std::left << S[i].name << std::setw(20) << S[i].surname
+            << std::fixed << std::setprecision(2) << S[i].final << "\n";
+        fr << row.str();    // Print the completed row
     }
-    fr.close();
+    fr.close();             // Close the results' file
 }
