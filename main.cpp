@@ -29,7 +29,7 @@ int main () {
         for (int i = 0 ; i < 5; i ++) {
             start = hrClock::now();
             createDataFile(1000 * mulitplier);
-            std::cout << 1000 * mulitplier << " studentu - ";
+            std::cout << "kursiokai" << 1000 * mulitplier << ".txt - ";
             mulitplier *= 10;
             end = hrClock::now();
             elapsed = end - start;
@@ -119,13 +119,19 @@ int main () {
             std::cin >> moreStudents;
             optionalInputValidation(moreStudents, 't', 'n');
         } while (moreStudents == 't');
-    } else readFile(S, fileName);                   // Read student data from a file
+    } else {
+        start = hrClock::now();
+        readFile(S, fileName);                   // Read student data from a file
+        end = hrClock::now();
+        elapsed = end - start;
+        std::cout << "\nFailo skaitymas uztruko: " << elapsed.count() << "s\n";
+    }
     S.shrink_to_fit();
-    std::cout << "Baiges skaitymas\n";
+
     // Calculate final grades
     for (int i = 0; i < S.size(); i ++)
         S[i].final = finalGrade(&S[i], finalType);
-        std::cout << "Baiges finalai\n";
+
     // Divide students into groups (from (S) to (S and GS))
     start = hrClock::now(); 
     makeGroups(S, GS);
