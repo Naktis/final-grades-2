@@ -24,13 +24,9 @@ C++ kalba parašyta ketvirtoji programos versija, skaičiuojanti galutinius stud
 
 ## Spartos analizė
 Įrangos spec.: Intel i7 CPU @ 1.80 GHz, 16 GB RAM, SSD
-
 Namų darbų kiekis: 5
-
 Namų darbų skaičiavimo būdas: mediana
-
 Rezultatų rūšiavimo būdas: pagal galutinį balą
-
 | Įrašų kiekis | Generavimas | Skaitymas | Studentų grupavimas | Laimingųjų išvedimas | Nelaimingųjų išvedimas |
 |--|--|--|--|--|--|
 | 1000 | 0.013964s | 0.014863s | 0.006256s | 0.011687s | 0.007499s |
@@ -48,11 +44,8 @@ Rezultatų rūšiavimo būdas: pagal galutinį balą
  4. Sukompiliuoti programą, pvz
 	- Jei naudojate *GCC* su *GNU Make*, įrašykite komandą`make`
 	- Jei naudojate *GCC* be *GNU Make*, įrašykite: 
-	
 	`g++ -c main.cpp functions.cpp`
-	
 	`g++ -o main main.o functions.o`
-	
 5. Paleiskite programą su `./main` arba `main`
  
  

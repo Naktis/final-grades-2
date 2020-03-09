@@ -142,19 +142,9 @@ int main () {
     // Sort results
     sort(S, GS, sortType);
 
-    // Write "the good students"' results into a file
-    start = hrClock::now(); 
+    // Write the results of grouped students into separate files
     writeToFile(GS, finalType, "patenkinami.txt");
-    end = hrClock::now();
-    elapsed = end - start;
-    std::cout << "\nLaiminguju rezultatu irasymas uztruko: " << elapsed.count() << "s";
-
-    // Write "the bad students"' results into a file
-    start = hrClock::now(); 
     writeToFile(S, finalType, "nepatenkinami.txt");
-    end = hrClock::now();
-    elapsed = end - start;
-    std::cout << "\nNeaiminguju rezultatu irasymas uztruko: " << elapsed.count() << "s\n";
 
     std::cout << "Programos pabaiga\n";
     return 0;
