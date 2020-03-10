@@ -7,7 +7,6 @@ struct Student {
     std::string name, surname;
     int exam;
     double final;
-    std::list<int> HW; // Vector of homework grades
 };
 
 #endif

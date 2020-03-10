@@ -43,31 +43,6 @@ int main () {
     std::cin >> inputType;
     optionalInputValidation(inputType, 'f', 'g', 'r');
 
-    // Get the name of the student data file
-    std::string fileName;
-    if (inputType == 'f') {
-        bool badFile;
-        std::cout << "\nIveskite failo varda formatu failo_pav.txt\n";
-        std::cin >> fileName;
-        do {
-            try {
-                std::ifstream in (fileName);
-                if (!in.good())         // Check if the data file exists
-                    throw 404;
-                else {
-                    in.close();
-                    badFile = false;
-                }
-            } catch (int exception) {   // If it doesn't, let user reenter new file name
-                badFile = true;
-                std::cout << "Duomenu failas " << fileName << " neegzistuoja. Iveskite esamo failo varda:\n";
-                std::cin.clear();
-                std::cin.ignore(256,'\n');
-                std::cin >> fileName;
-            }
-        } while (badFile);
-    }
-
     // Select sorting type (alphabetically of by final grades)
     char sortType;
     std::cout << "\nPasirinkite rezultatu rusiavimo buda:\n";
@@ -82,52 +57,17 @@ int main () {
     std::cin >> finalType;
     optionalInputValidation(finalType, 'm', 'v');
 
-    // Enter/generate grades manually
+    // Read data
     if (inputType == 'r' || inputType == 'g') {
-        char moreStudents = 'n';
-        bool moreHW;
-        int tempHW;       // Temporary homework value for validation
-        Student temp;     // Temporary structure to be filled in before pushing back to the list
-        do {
-            moreHW = true;
-            temp.HW.clear();                        // Empty the list for new values
-
-            std::cout << "\nStudento vardas ir pavarde:\n";
-            std::cin >> temp.name >> temp.surname;
-
-            if (inputType == 'g')
-                generateGradesManually(&temp);      // Generate homework and exam grades
-            else {
-                std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
-                do {
-                    std::cin >> tempHW;
-                    numberInputValidation(tempHW, 0, 10);
-                    if (tempHW == 0)
-                        moreHW = false;             // Terminate the loop, if 0 is entered
-                    else temp.HW.push_back(tempHW); // Add the entered grade to the homework list
-                } while (moreHW);                   // Continue the loop, if it's wanted to enter more h.w. grades
-
-                std::cout << "\nEgzamino balas:\n";
-                std::cin >> temp.exam;
-                numberInputValidation(temp.exam, 1, 10);
-            }
-            S.push_back(temp);                      // Add the structure to the list of student data
-
-            std::cout << "\nAr norite ivesti dar vieno studento duomenis? (t/n) ";
-            std::cin >> moreStudents;
-            optionalInputValidation(moreStudents, 't', 'n');
-        } while (moreStudents == 't');
+        readEnteredData(S, inputType, finalType);
     } else {
+        std::string fileName = getFileName();
         start = hrClock::now();
-        readFile(S, fileName);                   // Read student data from a file
+        readFile(S, fileName, finalType);
         end = hrClock::now();
         elapsed = end - start;
         std::cout << "\nFailo skaitymas uztruko: " << elapsed.count() << "s\n";
     }
-
-    // Calculate final grades
-    for (auto it = S.begin(); it != S.end(); it ++)
-        it->final = finalGrade(*it, finalType);
 
     // Divide students into groups (from (S) to (S and GS))
     start = hrClock::now(); 
