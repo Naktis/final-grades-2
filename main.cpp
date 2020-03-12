@@ -1,14 +1,16 @@
 #include <iostream>
-#include <list>
-#include <algorithm>
-#include <fstream>
 #include <chrono>
 
-#include "structure.h"
-#include "functions.h"
+#include "validation.h"
+#include "containers.h"
+#include "file.h"
 
 int main () {
-    std::list<Student> S, GS; // All students' (S) and "the good students"' (GS) data lists
+    char container;
+    std::cout << "Pasirinkite konteineri darbui su duomenimis: \n";
+    std::cout << "std::vector:\tv\nstd::list:\tl\nstd::deque:\td\n";
+    std::cin >> container;
+    optionalInputValidation(container, 'v', 'l', 'd');
 
     // Timer properties
     using hrClock = std::chrono::high_resolution_clock;
@@ -57,32 +59,12 @@ int main () {
     std::cin >> finalType;
     optionalInputValidation(finalType, 'm', 'v');
 
-    // Read data
-    if (inputType == 'r' || inputType == 'g') {
-        readEnteredData(S, inputType, finalType);
-    } else {
-        std::string fileName = getFileName();
-        start = hrClock::now();
-        readFile(S, fileName, finalType);
-        end = hrClock::now();
-        elapsed = end - start;
-        std::cout << "\nFailo skaitymas uztruko: " << elapsed.count() << "s\n";
-    }
+    if (container == 'v')
+        vector(inputType, finalType, sortType);
+    else if (container == 'd')
+        deque(inputType, finalType, sortType);
+    else list(inputType, finalType, sortType);
 
-    // Divide students into groups (from (S) to (S and GS))
-    start = hrClock::now(); 
-    makeGroups(S, GS);
-    end = hrClock::now();
-    elapsed = end - start;
-    std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
-
-    // Sort results
-    sort(S, GS, sortType);
-
-    // Write the results of grouped students into separate files
-    writeToFile(GS, finalType, "patenkinami.txt");
-    writeToFile(S, finalType, "nepatenkinami.txt");
-
-    std::cout << "\nProgramos pabaiga\n";
+    std::cout << "Programos pabaiga\n";
     return 0;
 }
