@@ -1,7 +1,7 @@
 
 # Galutinių studentų balų skaičiuoklė
 
-C++ kalba parašyta ketvirtoji programos versija, skaičiuojanti galutinius studentų balus pagal formulę
+C++ kalba parašyta penktoji programos versija, skaičiuojanti galutinius studentų balus pagal formulę
 
     Galutinis = 0.4 * namų darbai + 0.6 * egzaminas
 
@@ -9,6 +9,7 @@ C++ kalba parašyta ketvirtoji programos versija, skaičiuojanti galutinius stud
 
 ## Naudotojo galimybės
 
+ - Pasirinkti, kokį std konteinerį (vector, deque, list) naudoti darbui su duomenimis
  - Pasirinkti duomenų failų generavimą
  - Pasirinkti, ar studento duomenis skaityti iš failo, ar generuoti atsitiktinai, ar įvesti ranka
  - Įvesti skaitomo duomenų failo pavadinimą
@@ -22,19 +23,34 @@ C++ kalba parašyta ketvirtoji programos versija, skaičiuojanti galutinius stud
  - Įvedus vieno studento duomenis pasirinkti, ar reikia įvesti daugiau studentų duomenų
 
 
-## Spartos analizė
+## STD konteinerių *vector, deque* ir *list* naudojimo spartos palyginimas
 Įrangos spec.: Intel i7 CPU @ 1.80 GHz, 16 GB RAM, SSD
-Namų darbų kiekis: 5
-Namų darbų skaičiavimo būdas: mediana
-Rezultatų rūšiavimo būdas: pagal galutinį balą
-| Įrašų kiekis | Generavimas | Skaitymas | Studentų grupavimas | Laimingųjų išvedimas | Nelaimingųjų išvedimas |
-|--|--|--|--|--|--|
-| 1000 | 0.013964s | 0.014863s | 0.006256s | 0.011687s | 0.007499s |
-| 10000 | 0.09877s | 0.116621s | 0.058854s | 0.045761s | 0.037535s |
-| 100000 | 0.5758s  | 0.797398s | 0.794526s | 0.374608s | 0.250596s |
-| 1000000 | 6.13948s | 7.47853s | 9.2707s | 3.87893s | 2.78709s|
-| 10000000 | 73.6627s | 74.0929s | 109.75s | 37.5145s | 25.6109s |
+Namų darbų kiekis: 8
+Namų darbų skaičiavimo būdas: vidurkis
+Rezultatų rūšiavimo būdas: pagal pavardę
 
+**Duomenų skaitymas iš failų ir galutinių balų skaičiavimas:**
+
+| Įrašų kiekis | std::vector | std::deque | std::list |
+|--|--|--|--|
+| 1000 | 0.01129s | 0.018851s | 0.021437s |
+| 10000 | 0.172806s | 0.145858s | 0.155495s |
+| 100000 | 1.00991s  | 1.08421s | 1.21618s |
+| 1000000 | 10.5939s | 10.312s | 11.4773s |
+| 10000000 | 97.1415s | 102.196s | 128.297s |
+
+Efektyviausia duomenų skaitymui naudoti *vector* arba *deque* STD konteinerius, mažiausiai efektyvu - *list* konteinerį. Čia *vector* pakeitus *deque* konteineriu, tikėtina, kad sparta nekis, o jei *list* konteineriu, funkcijos darbas sulėtės.
+
+**Duomenų rūšiavimas į dvi kategorijas:**
+| Įrašų kiekis | std::vector | std::deque | std::list |
+|--|--|--|--|
+| 1000 | 0.004103s | 0.003279s | 0.001035s |
+| 10000 | 0.035193s | 0.041735s | 0.012601s |
+| 100000 | 0.484706s  | 0.536913s | 0.188799s |
+| 1000000 | 6.82151s | 6.95582s | 2.06539s |
+| 10000000 | 76.2613s | 77.3368s | 27.3425s |
+
+Efektyviausia duomenų rūšiavimui naudoti *std::list* konteinerį, mažiausiai efektyvu - *std::deque* arba *std::vector* konteinerį. Čia *vector* pakeitus *deque* konteineriu, tikėtina, kad sparta nekis arba nežymiai sumažės, o jei *list* konteineriu, funkcijos darbas pagreitės.
 
 ## Programos diegimas ir naudojimas:
 
@@ -44,20 +60,18 @@ Rezultatų rūšiavimo būdas: pagal galutinį balą
  4. Sukompiliuoti programą, pvz
 	- Jei naudojate *GCC* su *GNU Make*, įrašykite komandą`make`
 	- Jei naudojate *GCC* be *GNU Make*, įrašykite: 
-	`g++ -c main.cpp functions.cpp`
-	`g++ -o main main.o functions.o`
+	`g++ -c main.cpp validation.cpp file.cpp funList.cpp funVector.cpp funDeque.cpp containers.cpp`
+	`g++ -o main main.o validation.o file.o funList.o funVector.o funDeque.o containers.o`
 5. Paleiskite programą su `./main` arba `main`
  
  
-## Patobulinimai nuo v0.3 versijos:
+## v0.5 versijos patobulinimai:
 
- - Pridėtas 5 duomenų failų, sudarytų iš: 1000, 10000, 100000, 1000000, 10000000 įrašų, generavimas
- - Pridėtas studentų rūšiavimas pagal galutinius balus
- - Studentai padalyti į dvi kategorijas pagal galutinius balus (nepažangūs su <5 balu ir pažangūs su aukštesniu balu)
- - Abiejų kategorijų rezultatai išvedami į skirtingus .txt formato failus
- - Duomenys skaitomi ir įrašomi ne po vieną elementą, bet po eilutę spartesniam programos veikimui
- - Efektyviau naudojama atmintis rezervuojant talpą vektoriams
- - Matuojamas failo generavimo, skaitymo, studentų grupavimo, duomenų įrašymo į failą laikas
+ - Pridėta std konteinerio pasirinkimo galimybė
+ - Išpildytos galimybės duomenų saugojimui naudoti std::deque ir std::list konteinerius
+ - Sumažintas struktūros narių kiekis efektyvesniam atminties naudojimui
+ - Galutinių balų skaičiavimas vykdomas iškart perskaičius namų darbus
+ - Programos kodas išskaidytas į daugiau mažesnių failų
 
 ------------
 Augustina Šareikaitė
