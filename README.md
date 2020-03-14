@@ -60,14 +60,16 @@ Efektyviausia duomenų rūšiavimui naudoti *std::list* konteinerį, mažiausiai
  4. Sukompiliuoti programą, pvz
 	- Jei naudojate *GCC* su *GNU Make*, įrašykite komandą`make`
 	- Jei naudojate *GCC* be *GNU Make*, įrašykite: 
+	
 	`g++ -c main.cpp validation.cpp file.cpp funList.cpp funVector.cpp funDeque.cpp containers.cpp`
+	
 	`g++ -o main main.o validation.o file.o funList.o funVector.o funDeque.o containers.o`
 5. Paleiskite programą su `./main` arba `main`
  
  
 ## v0.5 versijos patobulinimai:
 
- - Pridėta std konteinerio pasirinkimo galimybė
+ - Pridėta STL konteinerio pasirinkimo galimybė
  - Išpildytos galimybės duomenų saugojimui naudoti std::deque ir std::list konteinerius
  - Sumažintas struktūros narių kiekis efektyvesniam atminties naudojimui
  - Galutinių balų skaičiavimas vykdomas iškart perskaičius namų darbus
