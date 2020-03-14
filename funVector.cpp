@@ -20,53 +20,17 @@ void generateGradesManuallyVector (Student* S, char finalType) {
     std::vector<int> HW;
     std::cout << "\nGeneruojami namu darbu balai.\n\n";
     do {
-        HW.push_back(random10(mt));                      // Generate a random h.w. grade between 1 and 10
+        HW.push_back(random10(mt)); // Generate a random h.w. grade between 1 and 10
         std::cout << "Sugeneruotas balas: " << HW.back() << "\nGeneruoti dar viena n.d. bala? (t/n) ";
         std::cin >> moreGrades;
         optionalInputValidation(moreGrades, 't', 'n');
     } while (moreGrades == 't');
 
-    int exam = random10(mt);                                 // Generate a random exam grade between 1 and 10
+    int exam = random10(mt);        // Generate a random exam grade between 1 and 10
     std::cout << "Sugeneruotas egzamino balas: " << exam << "\n";
     
+    // Calculate the final grade and add it to the structure
     S->final = finalGradeVector(HW, exam, finalType);
-}
-
-void createDataFileVector (int numOfStudents) {
-    using hrClock = std::chrono::high_resolution_clock;
-    std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count())); // Random number generator
-    std::uniform_int_distribution<int> random10(1, 10);
-    std::uniform_int_distribution<int> random20(1, 20);
-    //int numOfHW = random20(mt);                     // Generate the number of HW grades 
-    int numOfHW = 5;
-
-    std::ostringstream fileName;
-    fileName << "kursiokai" << numOfStudents << ".txt"; // Create data file name
-    std::ofstream add (fileName.str());                 // Open data file
-
-    // Print header text
-    std::ostringstream row ("");
-    row << std::setw(20) << std::left << "Vardas" << std::setw(21) << "Pavarde";
-
-    for (int i = 1; i <= numOfHW; i ++) 
-        row << "ND" << std::setw(8) << std::left << i;
-    row << "Egz.\n";
-    add << row.str();
-
-    // Print student data text
-    int lastGenerated = 0, grade;
-    for (int i = 1; i <= numOfStudents; i ++) {
-        row.str("");
-        row << "Vardas" << std::setw(14) << std::left << i << "Pavarde" << std::setw(14) << std::left << i;
-        for (int j = 0; j <= numOfHW; j ++) {
-            grade = random10(mt);
-            row << std::setw(10) << std::left << grade; // Generate an exam grade
-            lastGenerated = grade;
-        }
-        row << "\n";
-        add << row.str();
-    }
-    add.close();
 }
 
 double averageVector (std::vector<int> &HW, int n) {
@@ -94,28 +58,28 @@ double finalGradeVector (std::vector<int> &HW, int exam, char type) {
 void readEnteredDataVector (std::vector<Student> &S, char inputType, char finalType) {
     char moreStudents = 'n';
     bool moreHW;
-    int tempHW;       // Temporary homework value for validation
+    int tempHW;       // Temporary homework grade for validation
     Student temp;     // Temporary structure to be filled in before pushing back to the vector
     std::vector<int> HW;
     int exam;
     do {
         moreHW = true;
-        HW.clear();                        // Empty the vector for new values
+        HW.clear();   // Empty the vector for new values
 
         std::cout << "\nStudento vardas ir pavarde:\n";
         std::cin >> temp.name >> temp.surname;
 
         if (inputType == 'g')
-            generateGradesManuallyVector(&temp, finalType);      // Generate homework and exam grades
+            generateGradesManuallyVector(&temp, finalType); // Generate homework and exam grades
         else {
             std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
             do {
                 std::cin >> tempHW;
                 numberInputValidation(tempHW, 0, 10);
                 if (tempHW == 0)
-                    moreHW = false;             // Terminate the loop, if 0 is entered
+                    moreHW = false;        // Terminate the loop, if 0 is entered
                 else HW.push_back(tempHW); // Add the entered grade to the homework vector
-            } while (moreHW);                   // Continue the loop, if it's wanted to enter more h.w. grades
+            } while (moreHW);              // Continue the loop, if it's wanted to enter more h.w. grades
             HW.shrink_to_fit();
 
             std::cout << "\nEgzamino balas:\n";
@@ -123,7 +87,7 @@ void readEnteredDataVector (std::vector<Student> &S, char inputType, char finalT
             numberInputValidation(exam, 1, 10);
             temp.final = finalGradeVector(HW, exam, finalType);
         }
-        S.push_back(temp);                      // Add the structure to the vector of student data
+        S.push_back(temp);                 // Add the structure to the vector of student data
 
         std::cout << "\nAr norite ivesti dar vieno studento duomenis? (t/n) ";
         std::cin >> moreStudents;
@@ -160,23 +124,24 @@ void readFileVector (std::vector<Student> &S, std::string fileName, char finalTy
         dataRow >> exam;
         temp.final = finalGradeVector(HW, exam, finalType);
         S.push_back(temp);               // Push the temporary structure to the vector of structures
-    }
-	fd.close();
+    } 
+    fd.close();
 }
 
 void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS) {
     // Sort students by their final grades
     std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
 
+    // Count the number of students with final grade < 5
     int numOfBadStudents = 0;
-    while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())     // Count the number of students with final grade < 5
+    while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
         numOfBadStudents ++;
 
     GS.reserve(S.size() - numOfBadStudents);    // Increase required capacity for the "good students" vector
     std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS)); // Copy "good students" into another vector
 
     S.resize(numOfBadStudents);                 // Leave vector with the "bad students" data only
-    S.shrink_to_fit();                          // Shrink it to save memory
+    S.shrink_to_fit();
 }
 
 void sortVector (std::vector<Student> &S, std::vector<Student> &GS, char sortType) {
@@ -190,8 +155,8 @@ void sortVector (std::vector<Student> &S, std::vector<Student> &GS, char sortTyp
 }
 
 void writeToFileVector (std::vector<Student> &S, char finalType, std::string fileName) {
-    std::ofstream fr (fileName);                // Open the results' file
-    std::ostringstream row ("");                // Create empty row stringstream
+    std::ofstream fr (fileName);
+    std::ostringstream row ("");
 
     // Print header
     row << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis ";
@@ -207,5 +172,5 @@ void writeToFileVector (std::vector<Student> &S, char finalType, std::string fil
             << std::fixed << std::setprecision(2) << S[i].final << "\n";
         fr << row.str();    // Print the completed row
     }
-    fr.close();             // Close the results' file
+    fr.close();
 }

@@ -1,25 +1,26 @@
 #include <iostream>
 #include <chrono>
 
-#include "validation.h"
-#include "containers.h"
-#include "file.h"
+#include "validation.h" // optionalInputValidation functions
+#include "containers.h" // vector, list and deque functions
+#include "file.h"       // createDataFile function
 
 int main () {
+    // Timer properties
+    using hrClock = std::chrono::high_resolution_clock;
+    hrClock::time_point start, end;
+    std::chrono::duration<double> elapsed;
+
+    // Select a std container
     char container;
     std::cout << "Pasirinkite konteineri darbui su duomenimis: \n";
     std::cout << "std::vector:\tv\nstd::list:\tl\nstd::deque:\td\n";
     std::cin >> container;
     optionalInputValidation(container, 'v', 'l', 'd');
 
-    // Timer properties
-    using hrClock = std::chrono::high_resolution_clock;
-    hrClock::time_point start, end;
-    std::chrono::duration<double> elapsed;
-
     // Select file generation
     char newFiles;
-    std::cout << "Ar norite generuoti naujus duomenu failus? (t/n)\n";
+    std::cout << "\nAr norite generuoti naujus duomenu failus? (t/n)\n";
     std::cin >> newFiles;
     optionalInputValidation(newFiles, 't', 'n');
 
@@ -59,6 +60,7 @@ int main () {
     std::cin >> finalType;
     optionalInputValidation(finalType, 'm', 'v');
 
+    // Call the function of the chosen container to read, modify and print data
     if (container == 'v')
         vector(inputType, finalType, sortType);
     else if (container == 'd')

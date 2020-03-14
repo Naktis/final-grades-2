@@ -13,22 +13,23 @@
 
 void generateGradesManuallyDeque (Student* S, char finalType) {
     using hrClock = std::chrono::high_resolution_clock;
-    std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count())); // Random number generator
+    std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
     std::uniform_int_distribution<int> random10(1, 10);
 
     char moreGrades;
     std::deque<int> HW;
     std::cout << "\nGeneruojami namu darbu balai.\n\n";
     do {
-        HW.push_back(random10(mt));                      // Generate a random h.w. grade between 1 and 10
+        HW.push_back(random10(mt)); // Generate a random h.w. grade
         std::cout << "Sugeneruotas balas: " << HW.back() << "\nGeneruoti dar viena n.d. bala? (t/n) ";
         std::cin >> moreGrades;
         optionalInputValidation(moreGrades, 't', 'n');
     } while (moreGrades == 't');
 
-    int exam = random10(mt);                                 // Generate a random exam grade between 1 and 10
+    int exam = random10(mt);        // Generate an exam grade
     std::cout << "Sugeneruotas egzamino balas: " << exam << "\n";
     
+    // Calculate the final grade and add it to the structure
     S->final = finalGradeDeque(HW, exam, finalType);
 }
 
@@ -57,19 +58,19 @@ double finalGradeDeque (std::deque<int> &HW, int exam, char type) {
 void readEnteredDataDeque (std::deque<Student> &S, char inputType, char finalType) {
     char moreStudents = 'n';
     bool moreHW;
-    int tempHW;       // Temporary homework value for validation
-    Student temp;     // Temporary structure to be filled in before pushing back to the deque
-    std::deque<int> HW;
+    int tempHW;        // Temporary homework grade for validation
+    Student temp;      // Temporary structure to be filled in before pushing back to the deque
+    std::deque<int> HW;// Deque of hw grades
     int exam;
     do {
         moreHW = true;
-        HW.clear();                        // Empty the deque for new values
+        HW.clear();    // Empty the deque for new values
 
         std::cout << "\nStudento vardas ir pavarde:\n";
         std::cin >> temp.name >> temp.surname;
 
         if (inputType == 'g')
-            generateGradesManuallyDeque(&temp, finalType);      // Generate homework and exam grades
+            generateGradesManuallyDeque(&temp, finalType); // Generate homework and exam grades
         else {
             std::cout << "\nIveskite namu darbu balus, atskirtus paspaudus'enter'. Po paskutinio balo iveskite 0:\n";
             do {
@@ -77,7 +78,7 @@ void readEnteredDataDeque (std::deque<Student> &S, char inputType, char finalTyp
                 numberInputValidation(tempHW, 0, 10);
                 if (tempHW == 0)
                     moreHW = false;             // Terminate the loop, if 0 is entered
-                else HW.push_back(tempHW); // Add the entered grade to the homework deque
+                else HW.push_back(tempHW);      // Add the entered grade to the homework deque
             } while (moreHW);                   // Continue the loop, if it's wanted to enter more h.w. grades
             HW.shrink_to_fit();
 
@@ -130,14 +131,16 @@ void makeGroupsDeque (std::deque<Student> &S, std::deque<Student> &GS) {
     // Sort students by their final grades
     std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
 
+    // Count the number of students with final grade < 5
     int numOfBadStudents = 0;
-    while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())  // Count the number of students with final grade < 5
+    while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
         numOfBadStudents ++;
 
-    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS)); // Copy "good students" into another deque
+    // Copy the "good students" into another deque
+    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));
 
-    S.resize(numOfBadStudents);                 // Leave deque with the "bad students" data only
-    S.shrink_to_fit();                          // Shrink it to save memory
+    S.resize(numOfBadStudents); // Leave the deque with the "bad students" data only
+    S.shrink_to_fit();
 }
 
 void sortDeque (std::deque<Student> &S, std::deque<Student> &GS, char sortType) {
@@ -151,13 +154,12 @@ void sortDeque (std::deque<Student> &S, std::deque<Student> &GS, char sortType) 
 }
 
 void writeToFileDeque (std::deque<Student> &S, char finalType, std::string fileName) {
-    std::ofstream fr (fileName);                // Open the results' file
-    std::ostringstream row ("");                // Create empty row stringstream
+    std::ofstream fr (fileName);
+    std::ostringstream row ("");
 
     // Print header
     row << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis ";
     fr << row.str();
-
     finalType == 'm' ? fr << "(Med.)\n" : fr << "(Vid.)\n";
     fr << "--------------------------------------------------------\n";
 
@@ -168,5 +170,5 @@ void writeToFileDeque (std::deque<Student> &S, char finalType, std::string fileN
             << std::fixed << std::setprecision(2) << S[i].final << "\n";
         fr << row.str();    // Print the completed row
     }
-    fr.close();             // Close the results' file
+    fr.close();
 }

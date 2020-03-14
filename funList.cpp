@@ -13,22 +13,23 @@
 
 void generateGradesManuallyList (Student* S, char finalType) {
     using hrClock = std::chrono::high_resolution_clock;
-    std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count())); // Random number generator
+    std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
     std::uniform_int_distribution<int> random10(1, 10);
 
     char moreGrades;
     std::list<int> HW;
     std::cout << "\nGeneruojami namu darbu balai.\n\n";
     do {
-        HW.push_back(random10(mt));                      // Generate a random h.w. grade between 1 and 10
+        HW.push_back(random10(mt)); // Generate a random h.w. grade
         std::cout << "Sugeneruotas balas: " << HW.back() << "\nGeneruoti dar viena n.d. bala? (t/n) ";
         std::cin >> moreGrades;
         optionalInputValidation(moreGrades, 't', 'n');
     } while (moreGrades == 't');
 
-    int exam = random10(mt);                                 // Generate a random exam grade between 1 and 10
+    int exam = random10(mt);       // Generate a random exam grade
     std::cout << "Sugeneruotas egzamino balas: " << exam << "\n";
     
+    // Calculate the final grade and add it to the structure
     S->final = finalGradeList(HW, exam, finalType);
 }
 
@@ -64,13 +65,13 @@ double finalGradeList (std::list<int> &HW, int exam, char type){
 void readEnteredDataList (std::list<Student> &S, char inputType, char finalType) {
     char moreStudents = 'n';
     bool moreHW;
-    int tempHW;       // Temporary homework value for validation
+    int tempHW;       // Temporary homework grade for validation
     std::list<int> HW;
     Student temp;     // Temporary structure to be filled in before pushing back to the list
     int exam;
     do {
         moreHW = true;
-        HW.clear();                        // Empty the list for new values
+        HW.clear();   // Empty the list for new values
 
         std::cout << "\nStudento vardas ir pavarde:\n";
         std::cin >> temp.name >> temp.surname;
@@ -105,29 +106,29 @@ void readFileList (std::list<Student> &S, std::string fileName, char finalType) 
 
     int numOfHW = 0;
     std::string header;
-    std::getline(fd, header);               // Read the first line of the file
-    std::stringstream firstRow (header);    // Make it readable by copying it into a stringstream
+    std::getline(fd, header);            // Read the first line of the file
+    std::stringstream firstRow (header); // Make it readable by copying it into a stringstream
     std::string str;
-    while (firstRow >> str)                 // Count the number of separate strings until the line reaches the end
+    while (firstRow >> str)              // Count the number of separate strings until the line reaches the end
         numOfHW ++;
-    numOfHW -= 3;                           // Ignore the name, surname and exam strings
+    numOfHW -= 3;                        // Ignore the name, surname and exam strings
 
     Student temp;
     int tempHW, exam;
     std::string row;
     std::stringstream dataRow;
     std::list<int> HW;
-    while (std::getline(fd, row)) {         // Continue reading until the end of file is reached (raised error flag)
+    while (std::getline(fd, row)) { // Continue reading until the end of file is reached (raised error flag)
         dataRow.str(row);
         dataRow >> temp.name >> temp.surname;
-        HW.clear();                    // Empty the temporary homework list and fill it with grades from the file
+        HW.clear();                 // Empty the temporary homework list and fill it with grades from the file
         for (int i = 0; i < numOfHW; i ++) {
             dataRow >> tempHW;
             HW.push_back(tempHW);
         }
         dataRow >> exam;
         temp.final = finalGradeList(HW, exam, finalType);
-        S.push_back(temp);                  // Push the temporary structure to the list of structures
+        S.push_back(temp);          // Push the temporary structure to the list of structures
     }
 	fd.close();
 }
@@ -136,14 +137,15 @@ void makeGroupsList (std::list<Student> &S, std::list<Student> &GS) {
     // Sort students by their final grades
     S.sort([](Student &s1, Student &s2) {return s1.final < s2.final;});
 
+    // Count the number of students with final grade < 5
     int numOfBadStudents = 0;
     auto it = S.begin();
-    while (it->final < 5.0 && it != S.end()) {      // Count the number of students with final grade < 5
+    while (it->final < 5.0 && it != S.end()) {
             numOfBadStudents ++;
             it ++;
     }
 
-    GS.assign(it, S.end());        // Copy good students' data to the list
+    GS.assign(it, S.end());        // Copy good students' data to another list
     S.resize(numOfBadStudents);    // Leave the list with the "bad students" data only
 }
 
@@ -158,8 +160,8 @@ void sortList (std::list<Student> &S, std::list<Student> &GS, char sortType) {
 }
 
 void writeToFileList (std::list<Student> &S, char finalType, std::string fileName) {
-    std::ofstream fr (fileName);                // Open the results' file
-    std::ostringstream row ("");                // Create empty row stringstream
+    std::ofstream fr (fileName);
+    std::ostringstream row ("");
 
     // Print header
     row << std::setw(20) << std::left << "Vardas" << std::setw(20) << "Pavarde" << "Galutinis ";
@@ -168,13 +170,13 @@ void writeToFileList (std::list<Student> &S, char finalType, std::string fileNam
     finalType == 'm' ? fr << "(Med.)\n" : fr << "(Vid.)\n";
     fr << "--------------------------------------------------------\n";
 
-    auto it = S.begin();
     // Print students' data
+    auto it = S.begin();
     for (auto it = S.begin(); it != S.end(); it ++) {
         row.str("");        // Empty the row stream and add single student's data
         row << std::setw(20) << std::left << it->name << std::setw(20) << it->surname
             << std::fixed << std::setprecision(2) << it->final << "\n";
         fr << row.str();    // Print the completed row
     }
-    fr.close();             // Close the results' file
+    fr.close();
 }

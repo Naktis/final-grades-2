@@ -38,7 +38,7 @@ void vector (char inputType, char finalType, char sortType) {
     makeGroupsVector(S, GS);
     end = hrClock::now();
     elapsed = end - start;
-    std::cout << "\nStudentu skirstymas uztruko: " << elapsed.count() << "s\n";
+    std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
 
     // Sort results
     sortVector(S, GS, sortType);
@@ -116,6 +116,4 @@ void list (char inputType, char finalType, char sortType) {
     // Write the results of grouped students into separate files
     writeToFileList(GS, finalType, "patenkinami.txt");
     writeToFileList(S, finalType, "nepatenkinami.txt");
-
-    std::cout << "\nProgramos pabaiga\n";
 }
