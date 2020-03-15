@@ -25,8 +25,11 @@ C++ kalba parašyta penktoji programos versija, skaičiuojanti galutinius studen
 
 ## STD konteinerių *vector, deque* ir *list* naudojimo spartos palyginimas
 Įrangos spec.: Intel i7 CPU @ 1.80 GHz, 16 GB RAM, SSD
+
 Namų darbų kiekis: 8
+
 Namų darbų skaičiavimo būdas: vidurkis
+
 Rezultatų rūšiavimo būdas: pagal pavardę
 
 **Duomenų skaitymas iš failų ir galutinių balų skaičiavimas:**
