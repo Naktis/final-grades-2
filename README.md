@@ -23,8 +23,8 @@ C++ kalba parašyta penktoji programos versija, skaičiuojanti galutinius studen
  - Įvedus vieno studento duomenis pasirinkti, ar reikia įvesti daugiau studentų duomenų
 
 
-## STD konteinerių *vector, deque* ir *list* naudojimo spartos palyginimas
-Įrangos spec.: Intel i7 CPU @ 1.80 GHz, 16 GB RAM, SSD
+## STL konteinerių *vector, deque* ir *list* naudojimo spartos palyginimas
+Įrangos spec.: Intel i7 CPU @ 1.80 GHz, 16 GB DDR3 RAM, SSD
 
 Namų darbų kiekis: 8
 
