@@ -113,6 +113,7 @@ void readFileDeque (std::deque<Student> &S, std::string fileName, char finalType
     std::istringstream dataRow;
     std::deque<int> HW;
     while (std::getline(fd, row)) {      // Continue reading until the end of file is reached (raised error flag)
+        dataRow.clear();
         dataRow.str(row);
         dataRow >> temp.name >> temp.surname;
         HW.clear();                      // Empty the temporary homework deque and fill it with grades from the file

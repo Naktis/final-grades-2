@@ -114,6 +114,7 @@ void readFileVector (std::vector<Student> &S, std::string fileName, char finalTy
     std::vector<int> HW;
     HW.reserve(numOfHW);
     while (std::getline(fd, row)) {      // Continue reading until the end of file is reached (raised error flag)
+        dataRow.clear();
         dataRow.str(row);
         dataRow >> temp.name >> temp.surname;
         HW.clear();                      // Empty the temporary homework vector and fill it with grades from the file

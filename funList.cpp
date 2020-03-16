@@ -119,6 +119,7 @@ void readFileList (std::list<Student> &S, std::string fileName, char finalType) 
     std::stringstream dataRow;
     std::list<int> HW;
     while (std::getline(fd, row)) { // Continue reading until the end of file is reached (raised error flag)
+        dataRow.clear();
         dataRow.str(row);
         dataRow >> temp.name >> temp.surname;
         HW.clear();                 // Empty the temporary homework list and fill it with grades from the file
