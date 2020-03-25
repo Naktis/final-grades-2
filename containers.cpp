@@ -1,15 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <list>
-#include <deque>
-#include <chrono>
-
-#include "structure.h"
-#include "validation.h"
-#include "file.h"
-#include "funVector.h"
-#include "funDeque.h"
-#include "funList.h"
+#include "containers.h"
 
 void vector (char inputType, char finalType, char sortType) {
     std::vector<Student> S, GS; // All students' (S) and "the good students"' (GS) data vectors
