@@ -1,15 +1,4 @@
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <algorithm>
-#include <random>
-#include <chrono>
-#include <list>
-
 #include "funList.h"
-#include "validation.h"
-#include "structure.h"
 
 void generateGradesManuallyList (Student* S, char finalType) {
     using hrClock = std::chrono::high_resolution_clock;

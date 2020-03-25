@@ -1,9 +1,4 @@
-#include <iostream>
-#include <chrono>
-
-#include "validation.h" // optionalInputValidation functions
 #include "containers.h" // vector, list and deque functions
-#include "file.h"       // createDataFile function
 
 int main () {
     // Timer properties

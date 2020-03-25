@@ -1,7 +1,7 @@
 #pragma once
 
 #include <deque>
-#include "structure.h"
+#include "libraries.h"
 
 // Data generation
 void generateGradesManuallyDeque (Student*);

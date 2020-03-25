@@ -1,10 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <chrono>
-#include <random>
-#include <sstream>
-#include <iomanip>
-
 #include "file.h"
 
 std::string getFileName () {
