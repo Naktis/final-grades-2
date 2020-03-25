@@ -1,9 +1,6 @@
-#ifndef STRUCTURE_H
-#define STRUCTURE_H
+#pragma once
 
 struct Student {
     std::string name, surname;
     double final;
 };
-
-#endif

@@ -1,9 +1,6 @@
-#ifndef FILE_H
-#define FILE_H
+#pragma once
 
 #include <string>
 
 std::string getFileName();
 void createDataFile (int);
-
-#endif

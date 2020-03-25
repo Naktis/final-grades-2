@@ -1,5 +1,4 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#pragma once
 
 #include <deque>
 #include "structure.h"
@@ -20,5 +19,3 @@ void readFileDeque (std::deque<Student>&, std::string, char);
 void makeGroupsDeque (std::deque<Student>&, std::deque<Student>&);
 void sortDeque (std::deque<Student>&, std::deque<Student>&, char);
 void writeToFileDeque (std::deque<Student>&, char, std::string);
-
-#endif

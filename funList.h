@@ -1,5 +1,4 @@
-#ifndef LIST_H
-#define LIST_H
+#pragma once
 
 #include <list>
 #include "structure.h"
@@ -20,5 +19,3 @@ void readFileList (std::list<Student>&, std::string, char);
 void makeGroupsList (std::list<Student>&, std::list<Student>&);
 void sortList (std::list<Student>&, std::list<Student>&, char);
 void writeToFileList (std::list<Student>&, char, std::string);
-
-#endif

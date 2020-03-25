@@ -1,8 +1,5 @@
-#ifndef CONTAINERS_H
-#define CONTAINERS_H
+#pragma once
 
 void vector(char, char, char);
 void deque(char, char, char);
 void list(char, char, char);
-
-#endif

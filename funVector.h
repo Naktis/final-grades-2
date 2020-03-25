@@ -1,5 +1,4 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#pragma once
 
 #include <vector>
 #include "structure.h"
@@ -20,5 +19,3 @@ void readFileVector (std::vector<Student>&, std::string, char);
 void makeGroupsVector (std::vector<Student>&, std::vector<Student>&);
 void sortVector (std::vector<Student>&, std::vector<Student>&, char);
 void writeToFileVector (std::vector<Student>&, char, std::string);
-
-#endif
