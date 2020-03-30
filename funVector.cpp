@@ -118,35 +118,54 @@ void readFileVector (std::vector<Student> &S, std::string fileName, char finalTy
     fd.close();
 }
 
-void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS, std::vector<Student> &BS, int strategy) {
-    // Sort students by their final grades
-    std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
+void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS, std::vector<Student> &BS, int strategy, char advanced) {
+    if (advanced == 't') {
+        // Get a pivot which is located between good and bad students
+        auto numOfBadStudents = std::partition (S.begin(), S.end(), [](Student &i){return (i.final < 5);});
 
-    // Count the number of students with final grade < 5
-    int numOfBadStudents = 0;
-    while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
-        numOfBadStudents ++;
+        // Copy good students into their vector
+        GS.reserve(S.end() - numOfBadStudents);
+        std::copy(numOfBadStudents, S.end(), std::back_inserter(GS));
 
-    // Copy good students into their vector
-    GS.reserve(S.size() - numOfBadStudents);
-    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));
+        // Copy bad students or resize the whole students' vector
+        if (strategy == 1) {
+            BS.reserve(numOfBadStudents - S.begin());
+            std::copy(S.begin(), numOfBadStudents, std::back_inserter(BS));
+            S.clear();
+        } else S.resize(numOfBadStudents - S.begin()); // Leave the main vector with the "bad students" data only
+    } else {
+        // Sort students by their final grades
+        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
 
-    // Copy bad students or shrink the whole students' vector
-    if (strategy == 1) {
-        BS.reserve(numOfBadStudents);
-        std::copy(S.begin(), S.begin() + numOfBadStudents, std::back_inserter(BS));
-        S.clear();
-    } else S.resize(numOfBadStudents); // Leave the main vector with the "bad students" data only
+        // Count the number of students with final grade < 5
+        int numOfBadStudents = 0;
+        while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
+            numOfBadStudents ++;
+
+        // Copy good students into their vector
+        GS.reserve(S.size() - numOfBadStudents);
+        std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));
+
+        // Copy bad students or resize the whole students' vector
+        if (strategy == 1) {
+            BS.reserve(numOfBadStudents);
+            std::copy(S.begin(), S.begin() + numOfBadStudents, std::back_inserter(BS));
+            S.clear();
+        } else S.resize(numOfBadStudents); // Leave the main vector with the "bad students" data only
+    }
     S.shrink_to_fit();
 }
 
-void sortVector (std::vector<Student> &S, std::vector<Student> &GS, char sortType) {
+void sortVector (std::vector<Student> &S1, std::vector<Student> &S2, char sortType) {
     if (sortType == 'v') {
-        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
-        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
+        std::sort(S1.begin(), S1.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
+        std::sort(S2.begin(), S2.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
     } else if (sortType == 'p') {
-        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
-        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+        std::sort(S1.begin(), S1.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+        std::sort(S2.begin(), S2.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+    } else {
+        std::sort(S1.begin(), S1.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;});
+        std::sort(S2.begin(), S2.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;});
     }
 }
 

@@ -16,6 +16,6 @@ void readEnteredDataVector (std::vector<Student>&, char, char);
 void readFileVector (std::vector<Student>&, std::string, char);
 
 // Other functions
-void makeGroupsVector (std::vector<Student>&, std::vector<Student>&, std::vector<Student>&, int);
+void makeGroupsVector (std::vector<Student>&, std::vector<Student>&, std::vector<Student>&, int, char);
 void sortVector (std::vector<Student>&, std::vector<Student>&, char);
 void writeToFileVector (std::vector<Student>&, char, std::string);

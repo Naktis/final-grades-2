@@ -4,6 +4,11 @@ void vector (char inputType, char finalType, char sortType, int strategy) {
     std::vector<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
     S.reserve(10000000);            // Max capacity to avoid memory overallocation
 
+    char advanced;
+    std::cout << "\nAr norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)\n";
+    std::cin >> advanced;
+    optionalInputValidation(advanced, 't', 'n');
+
     // Timer properties
     using hrClock = std::chrono::high_resolution_clock;
     hrClock::time_point start, end;
@@ -24,7 +29,7 @@ void vector (char inputType, char finalType, char sortType, int strategy) {
 
     // Divide students into groups (from (S) to (S and GS))
     start = hrClock::now(); 
-    makeGroupsVector(S, GS, BS, strategy);
+    makeGroupsVector(S, GS, BS, strategy, advanced);
     end = hrClock::now();
     elapsed = end - start;
     std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
