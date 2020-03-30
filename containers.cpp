@@ -1,8 +1,8 @@
 #include "containers.h"
 
-void vector (char inputType, char finalType, char sortType) {
-    std::vector<Student> S, GS; // All students' (S) and "the good students"' (GS) data vectors
-    S.reserve(10000000);        // Max capacity to avoid memory overallocation
+void vector (char inputType, char finalType, char sortType, int strategy) {
+    std::vector<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
+    S.reserve(10000000);            // Max capacity to avoid memory overallocation
 
     // Timer properties
     using hrClock = std::chrono::high_resolution_clock;
@@ -24,21 +24,22 @@ void vector (char inputType, char finalType, char sortType) {
 
     // Divide students into groups (from (S) to (S and GS))
     start = hrClock::now(); 
-    makeGroupsVector(S, GS);
+    makeGroupsVector(S, GS, BS, strategy);
     end = hrClock::now();
     elapsed = end - start;
     std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
 
     // Sort results
-    sortVector(S, GS, sortType);
+    strategy == 1 ? sortVector(BS, GS, sortType) : sortVector(S, GS, sortType);
 
     // Write the results of grouped students into separate files
     writeToFileVector(GS, finalType, "patenkinami.txt");
-    writeToFileVector(S, finalType, "nepatenkinami.txt");
+    strategy == 1 ?  writeToFileVector(BS, finalType, "nepatenkinami.txt") : writeToFileVector(S, finalType, "nepatenkinami.txt");
+
 }
 
-void deque (char inputType, char finalType, char sortType) {
-    std::deque<Student> S, GS; // All students' (S) and "the good students"' (GS) data deques
+void deque (char inputType, char finalType, char sortType, int strategy) {
+    std::deque<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
 
     // Timer properties
     using hrClock = std::chrono::high_resolution_clock;
@@ -59,21 +60,21 @@ void deque (char inputType, char finalType, char sortType) {
 
     // Divide students into groups (from (S) to (S and GS))
     start = hrClock::now(); 
-    makeGroupsDeque(S, GS);
+    makeGroupsDeque(S, GS, BS, strategy);
     end = hrClock::now();
     elapsed = end - start;
-    std::cout << "\nStudentu skirstymas uztruko: " << elapsed.count() << "s\n";
+    std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
 
     // Sort results
-    sortDeque(S, GS, sortType);
+    strategy == 1 ? sortDeque(BS, GS, sortType) : sortDeque(S, GS, sortType);
 
     // Write the results of grouped students into separate files
     writeToFileDeque(GS, finalType, "patenkinami.txt");
-    writeToFileDeque(S, finalType, "nepatenkinami.txt");
+    strategy == 1 ? writeToFileDeque(BS, finalType, "nepatenkinami.txt") : writeToFileDeque(S, finalType, "nepatenkinami.txt");
 }
 
-void list (char inputType, char finalType, char sortType) {
-    std::list<Student> S, GS; // All students' (S) and "the good students"' (GS) data lists
+void list (char inputType, char finalType, char sortType, int strategy) {
+    std::list<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
 
     // Timer properties
     using hrClock = std::chrono::high_resolution_clock;
@@ -94,15 +95,15 @@ void list (char inputType, char finalType, char sortType) {
 
     // Divide students into groups (from (S) to (S and GS))
     start = hrClock::now(); 
-    makeGroupsList(S, GS);
+    makeGroupsList(S, GS, BS, strategy);
     end = hrClock::now();
     elapsed = end - start;
     std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
 
     // Sort results
-    sortList(S, GS, sortType);
+    strategy == 1 ? sortList(BS, GS, sortType) : sortList(S, GS, sortType);
 
     // Write the results of grouped students into separate files
     writeToFileList(GS, finalType, "patenkinami.txt");
-    writeToFileList(S, finalType, "nepatenkinami.txt");
+    strategy == 1 ? writeToFileList(BS, finalType, "nepatenkinami.txt") : writeToFileList(S, finalType, "nepatenkinami.txt");
 }

@@ -123,7 +123,7 @@ void readFileList (std::list<Student> &S, std::string fileName, char finalType) 
 	fd.close();
 }
 
-void makeGroupsList (std::list<Student> &S, std::list<Student> &GS) {
+void makeGroupsList (std::list<Student> &S, std::list<Student> &GS, std::list<Student> &BS, int strategy) {
     // Sort students by their final grades
     S.sort([](Student &s1, Student &s2) {return s1.final < s2.final;});
 
@@ -131,12 +131,15 @@ void makeGroupsList (std::list<Student> &S, std::list<Student> &GS) {
     int numOfBadStudents = 0;
     auto it = S.begin();
     while (it->final < 5.0 && it != S.end()) {
-            numOfBadStudents ++;
-            it ++;
+        numOfBadStudents ++;
+        it ++;
     }
 
-    GS.assign(it, S.end());        // Copy good students' data to another list
-    S.resize(numOfBadStudents);    // Leave the list with the "bad students" data only
+    GS.assign(it, S.end());               // Copy good students' data to another list
+    if (strategy == 1) {
+        BS.assign(S.begin(), it);         // Copy bad students
+        S.clear();
+    } else S.resize(numOfBadStudents);    // Leave the list with the "bad students" data only
 }
 
 void sortList (std::list<Student> &S, std::list<Student> &GS, char sortType) {

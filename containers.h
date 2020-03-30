@@ -5,6 +5,6 @@
 #include "funDeque.h"
 #include "funList.h"
 
-void vector(char, char, char);
-void deque(char, char, char);
-void list(char, char, char);
+void vector(char, char, char, int);
+void deque(char, char, char, int);
+void list(char, char, char, int);

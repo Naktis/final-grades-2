@@ -13,6 +13,13 @@ int main () {
     std::cin >> container;
     optionalInputValidation(container, 'v', 'l', 'd');
 
+    // Select data partition strategy
+    int strategy;
+    std::cout << "\nPasirinkite studentu skirstymo i kategorijas strategija: \n";
+    std::cout << "Kurti du naujus konteinerius:\t1\nKurti viena nauja konteineri: \t2\n";
+    std::cin >> strategy;
+    numberInputValidation(strategy, 1, 2);
+
     // Select file generation
     char newFiles;
     std::cout << "\nAr norite generuoti naujus duomenu failus? (t/n)\n";
@@ -57,10 +64,10 @@ int main () {
 
     // Call the function of the chosen container to read, modify and print data
     if (container == 'v')
-        vector(inputType, finalType, sortType);
+        vector(inputType, finalType, sortType, strategy);
     else if (container == 'd')
-        deque(inputType, finalType, sortType);
-    else list(inputType, finalType, sortType);
+        deque(inputType, finalType, sortType, strategy);
+    else list(inputType, finalType, sortType, strategy);
 
     std::cout << "Programos pabaiga\n";
     return 0;

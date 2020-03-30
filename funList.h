@@ -16,6 +16,6 @@ void readEnteredDataList (std::list<Student> &, char, char);
 void readFileList (std::list<Student>&, std::string, char);
 
 // Other functions
-void makeGroupsList (std::list<Student>&, std::list<Student>&);
+void makeGroupsList (std::list<Student>&, std::list<Student>&, std::list<Student>&, int);
 void sortList (std::list<Student>&, std::list<Student>&, char);
 void writeToFileList (std::list<Student>&, char, std::string);

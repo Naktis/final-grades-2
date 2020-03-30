@@ -118,7 +118,7 @@ void readFileVector (std::vector<Student> &S, std::string fileName, char finalTy
     fd.close();
 }
 
-void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS) {
+void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS, std::vector<Student> &BS, int strategy) {
     // Sort students by their final grades
     std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
 
@@ -127,10 +127,16 @@ void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS) {
     while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
         numOfBadStudents ++;
 
-    GS.reserve(S.size() - numOfBadStudents);    // Increase required capacity for the "good students" vector
-    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS)); // Copy "good students" into another vector
+    // Copy good students into their vector
+    GS.reserve(S.size() - numOfBadStudents);
+    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));
 
-    S.resize(numOfBadStudents);                 // Leave vector with the "bad students" data only
+    // Copy bad students or shrink the whole students' vector
+    if (strategy == 1) {
+        BS.reserve(numOfBadStudents);
+        std::copy(S.begin(), S.begin() + numOfBadStudents, std::back_inserter(BS));
+        S.clear();
+    } else S.resize(numOfBadStudents); // Leave the main vector with the "bad students" data only
     S.shrink_to_fit();
 }
 

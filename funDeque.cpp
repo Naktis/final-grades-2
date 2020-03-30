@@ -117,7 +117,7 @@ void readFileDeque (std::deque<Student> &S, std::string fileName, char finalType
 	fd.close();
 }
 
-void makeGroupsDeque (std::deque<Student> &S, std::deque<Student> &GS) {
+void makeGroupsDeque (std::deque<Student> &S, std::deque<Student> &GS, std::deque<Student> &BS, int strategy) {
     // Sort students by their final grades
     std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
 
@@ -126,10 +126,11 @@ void makeGroupsDeque (std::deque<Student> &S, std::deque<Student> &GS) {
     while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
         numOfBadStudents ++;
 
-    // Copy the "good students" into another deque
-    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));
-
-    S.resize(numOfBadStudents); // Leave the deque with the "bad students" data only
+    std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));       // Copy good students
+    if (strategy == 1) {
+        std::copy(S.begin(), S.begin() + numOfBadStudents, std::back_inserter(BS)); // Copy bad students
+        S.clear();
+    } else S.resize(numOfBadStudents);  // Leave the main vector with the "bad students" data only
     S.shrink_to_fit();
 }
 

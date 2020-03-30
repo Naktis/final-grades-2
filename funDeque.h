@@ -16,6 +16,6 @@ void readEnteredDataDeque (std::deque<Student>&, char, char);
 void readFileDeque (std::deque<Student>&, std::string, char);
 
 // Other functions
-void makeGroupsDeque (std::deque<Student>&, std::deque<Student>&);
+void makeGroupsDeque (std::deque<Student>&, std::deque<Student>&, std::deque<Student>&, int);
 void sortDeque (std::deque<Student>&, std::deque<Student>&, char);
 void writeToFileDeque (std::deque<Student>&, char, std::string);
