@@ -39,7 +39,7 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 5. Paleiskite programą su `./main` arba `main`
 6. Pasirinkite norimus programos darbo parametrus pagal nurodymus ekrane
 
-### Naudojimosi programa pavyzdys
+### Diegimo ir naudojimosi programa pavyzdys
 
 ```
 C:...>make
