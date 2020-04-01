@@ -37,24 +37,88 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 	
 	`g++ -o main main.o validation.o file.o funList.o funVector.o funDeque.o containers.o`
 5. Paleiskite programą su `./main` arba `main`
+6. Pasirinkite norimus programos darbo parametrus pagal nurodymus ekrane
+
+### Naudojimosi programa pavyzdys
+
+```
+C:...>make
+g++    -c -o validation.o validation.cpp
+g++    -c -o file.o file.cpp
+g++    -c -o funList.o funList.cpp
+g++    -c -o funVector.o funVector.cpp
+g++    -c -o funDeque.o funDeque.cpp
+g++    -c -o containers.o containers.cpp
+g++ -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o
+
+C:...>main
+Pasirinkite konteineri darbui su duomenimis:
+std::vector:    v
+std::list:      l
+std::deque:     d
+v
+
+Pasirinkite studentu skirstymo i kategorijas strategija:
+Kurti du naujus konteinerius:   1
+Kurti viena nauja konteineri:   2
+2
+
+Ar norite generuoti naujus duomenu failus? (t/n)
+t
+
+Duomenu failu generavimo trukme:
+kursiokai1000.txt - 0.005546s
+kursiokai10000.txt - 0.034645s
+kursiokai100000.txt - 0.311169s
+kursiokai1000000.txt - 3.22537s
+kursiokai10000000.txt - 32.727s
+
+Pasirinkite studentu balu ivesties buda:
+Skaitymas is failo:       f
+Atsitiktinis generavimas: g
+Rankinis ivedimas:        r
+f
+
+Pasirinkite rezultatu rusiavimo buda:
+Abeceliskai pagal varda:        v
+Abeceliskai pagal pavarde:      p
+Pagal galutini bala:            b
+p
+
+Pasirinkite namu darbu skaiciavimo buda:
+Mediana:        m
+Vidurkis:       v
+v
+
+Ar norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)
+t
+
+Iveskite failo varda formatu failo_pav.txt
+kursiokai1000000.txt
+
+Failo skaitymas uztruko: 3.89256s
+Studentu skirstymas uztruko: 0.355778s
+Programos pabaiga
+
+C:...>
+```
 
 -------------------------------------
 
 # Versijos
 
-## v1.0
+## [v1.0](https://github.com/Naktis/final-grades/releases/tag/v1.0)
 ### Patobulinimai
  - Pridėta galimybė rūšiuoti studentus kuriant du naujus konteinerius
  - Išmatuota, kaip keičiasi studentų rūšiavimo laikas naudojant 1 arba 2 naujus konteinerius
  - Panaudoti nauji STL algoritmai studentų rūšiavimo optimizavimui
  - Išmatuota, kaip keičiasi studentų rūšiavimo laikas naudojant ir nenaudojant optimizavimo algoritmus
- - Antraštiniuose failuose #ifndef direktyvos pakeistos #pragma once
- - Sumažintas #include direktyvų kiekis, reikalingos perkeltos į antraštinius failus
 
 ### Spartos analizė // Studentų grupavimo strategijos
 
 **1 strategija:** kuriami 2 nauji konteineriai, senojo turinys ištrinamas
-**2 strategija:** kuriamas 1 naujas konteineris, iš senojo išimama dalis turinio
+
+**2 strategija:** kuriamas 1 naujas konteineris, nukopijuota dalis iš senojo konteinerio ištrinama
 
 | Įrašų kiekis | 1 / vector | 2 / vector | 1 / deque | 2 / deque | 1 / list | 2 / list |
 |--|--|--|--|--|--|--|
@@ -67,6 +131,7 @@ Pasitelkiant 2 strategiją dalyba vyksta greičiau. Tai geriausiai atsispindi na
 ### Spartos analizė // Grupavimą spartinantys algoritmai su *std::vector*
 
 **Paprasta dalyba**: studentai surūšiuojami galutinių balų didėjimo tvarka, randama pirmo studento, turinčio didesnį nei 5 balą, vieta, toliau žingsniai vykdomi pagal 2 strategiją
+
 **Optimizuota dalyba**: studentų grupės paskirstomos su *std::partition*, toliau žingsniai vykdomi pagal 2 strategiją
 | Įrašų kiekis | Paprasta dalyba | Optimizuota dalyba |
 |--|--|--|
@@ -76,7 +141,7 @@ Pasitelkiant 2 strategiją dalyba vyksta greičiau. Tai geriausiai atsispindi na
 
 Pagal gautus rezultatus, papildomi algoritmai optimizavimui panaudoti sėkmingai, nes visur juos panaudojus dalybos laikas sutrumpėja ~10 kartų.
 
-## v0.5
+## [v0.5](https://github.com/Naktis/final-grades/releases/tag/v0.5.1)
 ### Patobulinimai
  - Pridėta STL konteinerio pasirinkimo galimybė
  - Išpildytos galimybės duomenų saugojimui naudoti std::deque ir std::list konteinerius
@@ -121,7 +186,7 @@ Efektyviausia duomenų rūšiavimui naudoti *std::list* konteinerį, mažiausiai
 Sudėjus duomenų skaitymo ir rūšiavimo rezultatus, efektyviausia programoje naudoti *std::list* konteinerį. Čia *std::vector* pakeitus *std::deque* konteineriu, sparta gali nežymiai sumažėti, o su *std::list* - padidėti.
 
 
-## v0.4
+## [v0.4](https://github.com/Naktis/final-grades/releases/tag/v0.4)
 ### Patobulinimai
  - Pridėtas 5 duomenų failų, sudarytų iš: 1000, 10000, 100000, 1000000, 10000000 įrašų, generavimas
  - Pridėtas studentų rūšiavimas pagal galutinius balus
@@ -142,19 +207,19 @@ Sudėjus duomenų skaitymo ir rūšiavimo rezultatus, efektyviausia programoje n
 | 1000000 | 6.13948s | 7.47853s | 9.2707s | 3.87893s | 2.78709s|
 | 10000000 | 73.6627s | 74.0929s | 109.75s | 37.5145s | 25.6109s |
 
-## v0.3
+## [v0.3](https://github.com/Naktis/final-grades/releases/tag/v0.3)
  - Duomenų struktūrai ir funkcijoms sukurti antraštiniai (*header*) failai, funkcijos perkeltos į atskirą *.cpp* failą.
  - Pridėtas išimčių valdymas darbui su failais (tikrinimas, ar atidaromas failas egzistuoja ir ar duomenų įrašymas į failą buvo sėkmingas). Įvesties tikrinimui naudojamos jau sukurtos funkcijos.
  - Pridėtas make komandų naudojimas, aprašytas *makefile*
  - Optimizuotas įvesties kartojimas po nesėkmingos įvesties, panaudojant funkcijos šabloną
-## v0.2
+## [v0.2](https://github.com/Naktis/final-grades/releases/tag/v0.2)
  - Pridėtas duomenų skaitymas ir rašymas į failą
  - Pakeistas skaičių generavimas iš funkcijos `rand()` į bibliotekos `<random>` generatorių naudojimą
  - Quicksort algoritmas pakeistas funkcija `sort()`  iš `<algorithm>`
  - Laiko matavimui naudojama ne `<ctime>`, bet `<chrono>` biblioteka
  - Rezultatai surūšiuojami pagal vardus abėcėliškai didėjant
-- Rezultatų stulpeliai tvarkingai sulygiuojami
-## v0.1
+
+## [v0.1](https://github.com/Naktis/final-grades/releases/tag/v0.1)
 - Pradinė programos versija, realizuota naudojant C - masyvus ir vektorius
 ------------
 Augustina Šareikaitė
