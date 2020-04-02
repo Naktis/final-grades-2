@@ -136,7 +136,7 @@ void makeGroupsVector (std::vector<Student> &S, std::vector<Student> &GS, std::v
     } else {
         // Sort students by their final grades
         std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
-
+        
         // Count the number of students with final grade < 5
         int numOfBadStudents = 0;
         while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())

@@ -4,7 +4,8 @@
 #include "funVector.h"
 #include "funDeque.h"
 #include "funList.h"
+#include "timer.h"
 
-void vector(char, char, char, int);
-void deque(char, char, char, int);
-void list(char, char, char, int);
+void vector(char, char, char, int, char, char, std::string);
+void deque(char, char, char, int, char, std::string);
+void list(char, char, char, int, char, std::string);

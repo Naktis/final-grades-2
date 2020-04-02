@@ -25,7 +25,7 @@ std::string getFileName () {
     return fileName;
 }
 
-void createDataFile (int numOfStudents) {
+void createDataFile (int numOfStudents, std::string& fileName) {
     using hrClock = std::chrono::high_resolution_clock;
     std::mt19937 mt(static_cast<long unsigned int>(hrClock::now().time_since_epoch().count()));
     std::uniform_int_distribution<int> random10(1, 10); // Generates a number from 1 to 10
@@ -33,9 +33,10 @@ void createDataFile (int numOfStudents) {
 
     int numOfHW = random20(mt);         // Generate the number of HW grades 
 
-    std::ostringstream fileName;        // Create the name of the file
-    fileName << "kursiokai" << numOfStudents << ".txt";
-    std::ofstream add (fileName.str()); // Open the created file
+    std::ostringstream fileNameStream;        // Create the name of the file
+    fileNameStream << "kursiokai" << numOfStudents << ".txt";
+    fileName = fileNameStream.str();
+    std::ofstream add (fileName); // Open the created file
 
     // Print header text
     std::ostringstream row ("");        // Empty row to be filled in with header data

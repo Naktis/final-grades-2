@@ -4,4 +4,4 @@
 #include "libraries.h"
 
 std::string getFileName();
-void createDataFile (int);
+void createDataFile (int, std::string&);
