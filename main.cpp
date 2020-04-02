@@ -5,7 +5,7 @@ int main () {
 
     // Select performance measurement
     char measure;
-    std::cout << "Ar norite matuoti kiekvieno programos etapo sparta? (t/n)\n";
+    std::cout << "Ar norite matuoti kiekvieno programos etapo trukme? (t/n)\n";
     std::cin >> measure;
     optionalInputValidation(measure, 't', 'n');
 

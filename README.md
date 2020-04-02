@@ -11,11 +11,13 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
  - Pasirinkti, kokį STL konteinerį (vector, deque, list) naudoti darbui su duomenimis
  - Pasirinkti duomenų failų generavimą
  - Pasirinkti, ar studento duomenis skaityti iš failo, ar generuoti atsitiktinai, ar įvesti ranka
+ - Pasirinkti, ar skaityti visus 5 sugeneruotus failus, ar tik vieną
  - Įvesti skaitomo duomenų failo pavadinimą
  - Pasirinkti, ar namų darbų balu bus laikomas jų vidurkis, ar mediana
  - Pasirinkti rezultatų rūšiavimo būdą (pagal vardą, pavardę ar galutinį balą)
  - Pasirinkti, ar naudoti programą spartinančius algoritmus su *std::vector* konteineriu
  - Pasirinkti studentų rūšiavimui naudojamų naujų konteinerių kiekį - 1 arba 2
+ - Pasirinkti kiekvieno programos etapo trukmes matavimą
  
  Jei pasirenkamas balų generavimas arba įvedimas ranka, suteikiama galimybė
  - Įvesti studento vardą, pavardę
@@ -52,26 +54,8 @@ g++    -c -o containers.o containers.cpp
 g++ -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o
 
 C:...>main
-Pasirinkite konteineri darbui su duomenimis:
-std::vector:    v
-std::list:      l
-std::deque:     d
-v
-
-Pasirinkite studentu skirstymo i kategorijas strategija:
-Kurti du naujus konteinerius:   1
-Kurti viena nauja konteineri:   2
-2
-
-Ar norite generuoti naujus duomenu failus? (t/n)
+Ar norite matuoti kiekvieno programos etapo trukme? (t/n)
 t
-
-Duomenu failu generavimo trukme:
-kursiokai1000.txt - 0.005546s
-kursiokai10000.txt - 0.034645s
-kursiokai100000.txt - 0.311169s
-kursiokai1000000.txt - 3.22537s
-kursiokai10000000.txt - 32.727s
 
 Pasirinkite studentu balu ivesties buda:
 Skaitymas is failo:       f
@@ -79,25 +63,55 @@ Atsitiktinis generavimas: g
 Rankinis ivedimas:        r
 f
 
-Pasirinkite rezultatu rusiavimo buda:
-Abeceliskai pagal varda:        v
-Abeceliskai pagal pavarde:      p
-Pagal galutini bala:            b
-p
+Pasirinkite konteineri darbui su duomenimis:
+std::vector:    v
+std::list:      l
+std::deque:     d
+v
+
+Ar norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)
+t
 
 Pasirinkite namu darbu skaiciavimo buda:
 Mediana:        m
 Vidurkis:       v
 v
 
-Ar norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)
+Pasirinkite studentu skirstymo i kategorijas strategija:
+Kurti du naujus konteinerius:   1
+Kurti viena nauja konteineri:   2
+2
+
+Pasirinkite rezultatu rusiavimo buda:
+Abeceliskai pagal varda:        v
+Abeceliskai pagal pavarde:      p
+Pagal galutini bala:            b
+p
+
+Ar norite generuoti naujus duomenu failus? (t/n)
 t
 
-Iveskite failo varda formatu failo_pav.txt
-kursiokai1000000.txt
+Duomenu failu generavimo trukme:
+kursiokai1000.txt - 0.00985s
+kursiokai10000.txt - 0.067339s
+kursiokai100000.txt - 0.519941s
+kursiokai1000000.txt - 5.26319s
+kursiokai10000000.txt - 49.5392s
 
-Failo skaitymas uztruko: 3.89256s
-Studentu skirstymas uztruko: 0.355778s
+Kiek failu norite perskaityti? (t/n)
+Visus sugeneruotus:     5
+Tik viena:              1
+1
+
+Iveskite failo varda formatu failo_pav.txt
+kursiokai100000.txt
+
+kursiokai100000.txt failo skaitymas uztruko:    0.635012s
+Studentu grupavimas uztruko:                    0.067675s
+Rezultatu rusiavimas uztruko:                   0.545357s
+Pazangiuju rezultatu irasymas uztruko:          0.383118s
+Nepazangiuju rezultatu irasymas uztruko:        0.353508s
+
 Programos pabaiga
 
 C:...>
@@ -111,8 +125,10 @@ C:...>
 ### Patobulinimai
  - Pridėta galimybė rūšiuoti studentus kuriant du naujus konteinerius
  - Išmatuota, kaip keičiasi studentų rūšiavimo laikas naudojant 1 arba 2 naujus konteinerius
- - Panaudoti nauji STL algoritmai studentų rūšiavimo optimizavimui
+ - Panaudoti nauji STL algoritmai studentų rūšiavimo paspartinimui
  - Išmatuota, kaip keičiasi studentų rūšiavimo laikas naudojant ir nenaudojant optimizavimo algoritmus
+ - Programos etapu trukmes matavimas optimizuotas naudojant [timer](../v0.6/timer.h) klasę
+ - Trukmes matavimas paverstas naudototojo pasirenkamu parametru
 
 ### Spartos analizė // Studentų grupavimo strategijos
 
