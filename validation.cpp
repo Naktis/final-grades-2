@@ -1,4 +1,3 @@
-#include <iostream>
 #include "validation.h"
 
 template <typename T>

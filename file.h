@@ -1,9 +1,7 @@
-#ifndef FILE_H
-#define FILE_H
+#pragma once
 
 #include <string>
+#include "libraries.h"
 
 std::string getFileName();
-void createDataFile (int);
-
-#endif
+void createDataFile (int, std::string&);

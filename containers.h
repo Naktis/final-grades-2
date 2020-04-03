@@ -1,8 +1,11 @@
-#ifndef CONTAINERS_H
-#define CONTAINERS_H
+#pragma once
 
-void vector(char, char, char);
-void deque(char, char, char);
-void list(char, char, char);
+#include "file.h"
+#include "funVector.h"
+#include "funDeque.h"
+#include "funList.h"
+#include "timer.h"
 
-#endif
+void vector(char, char, char, int, char, char, std::string);
+void deque(char, char, char, int, char, std::string);
+void list(char, char, char, int, char, std::string);

@@ -1,119 +1,102 @@
-#include <iostream>
-#include <vector>
-#include <list>
-#include <deque>
-#include <chrono>
+#include "containers.h"
 
-#include "structure.h"
-#include "validation.h"
-#include "file.h"
-#include "funVector.h"
-#include "funDeque.h"
-#include "funList.h"
-
-void vector (char inputType, char finalType, char sortType) {
-    std::vector<Student> S, GS; // All students' (S) and "the good students"' (GS) data vectors
-    S.reserve(10000000);        // Max capacity to avoid memory overallocation
-
-    // Timer properties
-    using hrClock = std::chrono::high_resolution_clock;
-    hrClock::time_point start, end;
-    std::chrono::duration<double> elapsed;
+void vector (char inputType, char finalType, char sortType, int strategy, char measure, char advanced, std::string fileName) {
+    std::vector<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
+    S.reserve(10000000);            // Max capacity to avoid memory overallocation
+    Timer t;
 
     // Read data
     if (inputType == 'r' || inputType == 'g') {
         readEnteredDataVector(S, inputType, finalType);
     } else {
-        std::string fileName = getFileName();
-        start = hrClock::now();
+        if (measure == 't') t.set();
         readFileVector(S, fileName, finalType);
-        end = hrClock::now();
-        elapsed = end - start;
-        std::cout << "\nFailo skaitymas uztruko: " << elapsed.count() << "s\n";
+        if (measure == 't') std::cout << "\n" << fileName << " failo skaitymas uztruko:\t" << t.elapsed() << "s\n";
     }
     S.shrink_to_fit();
 
     // Divide students into groups (from (S) to (S and GS))
-    start = hrClock::now(); 
-    makeGroupsVector(S, GS);
-    end = hrClock::now();
-    elapsed = end - start;
-    std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
+    if (measure == 't') t.set();
+    makeGroupsVector(S, GS, BS, strategy, advanced);
+    if (measure == 't') std::cout << "Studentu grupavimas uztruko:\t\t\t" << t.elapsed() << "s\n";
 
     // Sort results
-    sortVector(S, GS, sortType);
+    if (measure == 't') t.set();
+    strategy == 1 ? sortVector(BS, GS, sortType) : sortVector(S, GS, sortType);
+    if (measure == 't') std::cout << "Rezultatu rusiavimas uztruko:\t\t\t" << t.elapsed() << "s\n";
 
     // Write the results of grouped students into separate files
+    if (measure == 't') t.set();
     writeToFileVector(GS, finalType, "patenkinami.txt");
-    writeToFileVector(S, finalType, "nepatenkinami.txt");
+    if (measure == 't') std::cout << "Pazangiuju rezultatu irasymas uztruko:\t\t" << t.elapsed() << "s\n";
+
+    if (measure == 't') t.set();
+    strategy == 1 ?  writeToFileVector(BS, finalType, "nepatenkinami.txt"): writeToFileVector(S, finalType, "nepatenkinami.txt");
+    if (measure == 't') std::cout << "Nepazangiuju rezultatu irasymas uztruko:\t" << t.elapsed() << "s\n";
 }
 
-void deque (char inputType, char finalType, char sortType) {
-    std::deque<Student> S, GS; // All students' (S) and "the good students"' (GS) data deques
-
-    // Timer properties
-    using hrClock = std::chrono::high_resolution_clock;
-    hrClock::time_point start, end;
-    std::chrono::duration<double> elapsed;
+void deque (char inputType, char finalType, char sortType, int strategy, char measure, std::string fileName) {
+    std::deque<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
+    Timer t;
 
     // Read data
     if (inputType == 'r' || inputType == 'g') {
         readEnteredDataDeque(S, inputType, finalType);
     } else {
-        std::string fileName = getFileName();
-        start = hrClock::now();
+        if (measure == 't') t.set();
         readFileDeque(S, fileName, finalType);
-        end = hrClock::now();
-        elapsed = end - start;
-        std::cout << "\nFailo skaitymas uztruko: " << elapsed.count() << "s\n";
-    }
+        if (measure == 't') std::cout << "\n" << fileName << " failo skaitymas uztruko:\t" << t.elapsed() << "s\n";
+    }    
 
     // Divide students into groups (from (S) to (S and GS))
-    start = hrClock::now(); 
-    makeGroupsDeque(S, GS);
-    end = hrClock::now();
-    elapsed = end - start;
-    std::cout << "\nStudentu skirstymas uztruko: " << elapsed.count() << "s\n";
+    if (measure == 't') t.set();
+    makeGroupsDeque(S, GS, BS, strategy);
+    if (measure == 't') std::cout << "Studentu skirstymas uztruko:\t\t\t" << t.elapsed() << "s\n";
 
     // Sort results
-    sortDeque(S, GS, sortType);
-
+    if (measure == 't') t.set();
+    strategy == 1 ? sortDeque(BS, GS, sortType) : sortDeque(S, GS, sortType);
+    if (measure == 't') std::cout << "Rezultatu rusiavimas uztruko:\t\t\t" << t.elapsed() << "s\n";
+    
     // Write the results of grouped students into separate files
+    if (measure == 't') t.set();
     writeToFileDeque(GS, finalType, "patenkinami.txt");
-    writeToFileDeque(S, finalType, "nepatenkinami.txt");
+    if (measure == 't') std::cout << "Pazangiuju rezultatu irasymas uztruko:\t\t" << t.elapsed() << "s\n";
+
+    if (measure == 't') t.set();
+    strategy == 1 ? writeToFileDeque(BS, finalType, "nepatenkinami.txt") : writeToFileDeque(S, finalType, "nepatenkinami.txt");
+    if (measure == 't') std::cout << "Nepazangiuju rezultatu irasymas uztruko:\t" << t.elapsed() << "s\n";
 }
 
-void list (char inputType, char finalType, char sortType) {
-    std::list<Student> S, GS; // All students' (S) and "the good students"' (GS) data lists
-
-    // Timer properties
-    using hrClock = std::chrono::high_resolution_clock;
-    hrClock::time_point start, end;
-    std::chrono::duration<double> elapsed;
+void list (char inputType, char finalType, char sortType, int strategy, char measure, std::string fileName) {
+    std::list<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
+    Timer t;
 
     // Read data
     if (inputType == 'r' || inputType == 'g') {
         readEnteredDataList(S, inputType, finalType);
     } else {
-        std::string fileName = getFileName();
-        start = hrClock::now();
+        if (measure == 't') t.set();
         readFileList(S, fileName, finalType);
-        end = hrClock::now();
-        elapsed = end - start;
-        std::cout << "\nFailo skaitymas uztruko: " << elapsed.count() << "s\n";
+        if (measure == 't') std::cout << "\n" << fileName << " failo skaitymas uztruko:\t" << t.elapsed() << "s\n";
     }
 
     // Divide students into groups (from (S) to (S and GS))
-    start = hrClock::now(); 
-    makeGroupsList(S, GS);
-    end = hrClock::now();
-    elapsed = end - start;
-    std::cout << "Studentu skirstymas uztruko: " << elapsed.count() << "s\n";
-
+    if (measure == 't') t.set(); 
+    makeGroupsList(S, GS, BS, strategy);
+    if (measure == 't') std::cout << "Studentu skirstymas uztruko:\t\t\t" << t.elapsed() << "s\n";
+    
     // Sort results
-    sortList(S, GS, sortType);
+    if (measure == 't') t.set();
+    strategy == 1 ? sortList(BS, GS, sortType) : sortList(S, GS, sortType);
+    if (measure == 't') std::cout << "Rezultatu rusiavimas uztruko:\t\t\t" << t.elapsed() << "s\n";
 
     // Write the results of grouped students into separate files
+    if (measure == 't') t.set();
     writeToFileList(GS, finalType, "patenkinami.txt");
-    writeToFileList(S, finalType, "nepatenkinami.txt");
+    if (measure == 't') std::cout << "Pazangiuju rezultatu irasymas uztruko:\t\t" << t.elapsed() << "s\n";
+
+    if (measure == 't') t.set();
+    strategy == 1 ? writeToFileList(BS, finalType, "nepatenkinami.txt") : writeToFileList(S, finalType, "nepatenkinami.txt");
+    if (measure == 't') std::cout << "Nepazangiuju rezultatu irasymas uztruko:\t" << t.elapsed() << "s\n";
 }

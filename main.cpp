@@ -1,43 +1,13 @@
-#include <iostream>
-#include <chrono>
-
-#include "validation.h" // optionalInputValidation functions
-#include "containers.h" // vector, list and deque functions
-#include "file.h"       // createDataFile function
+#include "containers.h"
 
 int main () {
-    // Timer properties
-    using hrClock = std::chrono::high_resolution_clock;
-    hrClock::time_point start, end;
-    std::chrono::duration<double> elapsed;
+    Timer t;
 
-    // Select a std container
-    char container;
-    std::cout << "Pasirinkite konteineri darbui su duomenimis: \n";
-    std::cout << "std::vector:\tv\nstd::list:\tl\nstd::deque:\td\n";
-    std::cin >> container;
-    optionalInputValidation(container, 'v', 'l', 'd');
-
-    // Select file generation
-    char newFiles;
-    std::cout << "\nAr norite generuoti naujus duomenu failus? (t/n)\n";
-    std::cin >> newFiles;
-    optionalInputValidation(newFiles, 't', 'n');
-
-    // Generate files
-    if (newFiles == 't') {
-        int mulitplier = 1;
-        std::cout << "\nDuomenu failu generavimo trukme:\n";
-        for (int i = 0 ; i < 5; i ++) {
-            start = hrClock::now();
-            createDataFile(1000 * mulitplier);
-            std::cout << "kursiokai" << 1000 * mulitplier << ".txt - ";
-            mulitplier *= 10;
-            end = hrClock::now();
-            elapsed = end - start;
-            std::cout << elapsed.count() << "s \n";
-        }
-    }
+    // Select performance measurement
+    char measure;
+    std::cout << "Ar norite matuoti kiekvieno programos etapo trukme? (t/n)\n";
+    std::cin >> measure;
+    optionalInputValidation(measure, 't', 'n');
 
     // Select input type (read from a file, generate or enter grades manually)
     char inputType;
@@ -46,12 +16,20 @@ int main () {
     std::cin >> inputType;
     optionalInputValidation(inputType, 'f', 'g', 'r');
 
-    // Select sorting type (alphabetically of by final grades)
-    char sortType;
-    std::cout << "\nPasirinkite rezultatu rusiavimo buda:\n";
-    std::cout << "Abeceliskai pagal varda:\tv\nAbeceliskai pagal pavarde:\tp\nPagal galutini bala:\t\tb\n"; 
-    std::cin >> sortType;
-    optionalInputValidation(sortType, 'v', 'p', 'b');
+    // Select a std container
+    char container;
+    std::cout << "\nPasirinkite konteineri darbui su duomenimis: \n";
+    std::cout << "std::vector:\tv\nstd::list:\tl\nstd::deque:\td\n";
+    std::cin >> container;
+    optionalInputValidation(container, 'v', 'l', 'd');
+
+    // Select optimization algorithms
+    char advanced;
+    if (container == 'v') {
+        std::cout << "\nAr norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)\n";
+        std::cin >> advanced;
+        optionalInputValidation(advanced, 't', 'n');
+    }
 
     // Select final grade calculation method (median or average)
     char finalType;
@@ -60,13 +38,67 @@ int main () {
     std::cin >> finalType;
     optionalInputValidation(finalType, 'm', 'v');
 
-    // Call the function of the chosen container to read, modify and print data
-    if (container == 'v')
-        vector(inputType, finalType, sortType);
-    else if (container == 'd')
-        deque(inputType, finalType, sortType);
-    else list(inputType, finalType, sortType);
+    // Select data partition strategy
+    int strategy;
+    std::cout << "\nPasirinkite studentu skirstymo i kategorijas strategija: \n";
+    std::cout << "Kurti du naujus konteinerius:\t1\nKurti viena nauja konteineri: \t2\n";
+    std::cin >> strategy;
+    numberInputValidation(strategy, 1, 2);
 
-    std::cout << "Programos pabaiga\n";
+    // Select sorting type (alphabetically of by final grades)
+    char sortType;
+    std::cout << "\nPasirinkite rezultatu rusiavimo buda:\n";
+    std::cout << "Abeceliskai pagal varda:\tv\nAbeceliskai pagal pavarde:\tp\nPagal galutini bala:\t\tb\n"; 
+    std::cin >> sortType;
+    optionalInputValidation(sortType, 'v', 'p', 'b');
+
+    // Select file generation
+    char fileCount = '1';       // Number of files to read
+    std::string genFiles[5];    // Array of generated files' names
+    if (inputType == 'f') {
+        char newFiles;
+        std::cout << "\nAr norite generuoti naujus duomenu failus? (t/n)\n";
+        std::cin >> newFiles;
+        optionalInputValidation(newFiles, 't', 'n');
+
+        // Generate files
+        if (newFiles == 't') {
+            int mulitplier = 1;
+            if (measure == 't') std::cout << "\nDuomenu failu generavimo trukme:\n";
+
+            for (int i = 0 ; i < 5; i ++) {
+                if (measure == 't') t.set();
+                createDataFile(1000 * mulitplier, genFiles[i]);
+                std::cout << genFiles[i];
+                measure == 't' ? std::cout << " - " << t.elapsed() << "s \n" : std::cout << " sugeneruotas\n";
+                mulitplier *= 10;
+            }
+        }
+
+        // Select the number of files to read
+        if (newFiles == 't') {
+            std::cout << "\nKiek failu norite perskaityti? (t/n)\n";
+            std::cout << "Visus sugeneruotus:\t5\nTik viena:\t\t1\n"; 
+            std::cin >> fileCount;
+            optionalInputValidation(fileCount, '5', '1');
+        };
+    }
+
+
+    // Read, group, sort and print data
+    std::string fileName;
+    for (int i = 0; i < fileCount - '0'; i ++) {
+        if (inputType == 'f')
+            fileCount == '5' ? fileName = genFiles[i] : fileName = getFileName();
+
+        if (container == 'v')
+            vector(inputType, finalType, sortType, strategy, measure, advanced, fileName);
+        else if (container == 'd')
+            deque(inputType, finalType, sortType, strategy, measure, fileName);
+        else list(inputType, finalType, sortType, strategy, measure, fileName);
+        if (fileCount == '5') std::cout << "(" << i + 1 << "/5)\n";
+    }
+
+    std::cout << "\nProgramos pabaiga\n";
     return 0;
 }

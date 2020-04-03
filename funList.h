@@ -1,8 +1,7 @@
-#ifndef LIST_H
-#define LIST_H
+#pragma once
 
 #include <list>
-#include "structure.h"
+#include "libraries.h"
 
 // Data generation
 void generateGradesManuallyList (Student*, char);
@@ -17,8 +16,6 @@ void readEnteredDataList (std::list<Student> &, char, char);
 void readFileList (std::list<Student>&, std::string, char);
 
 // Other functions
-void makeGroupsList (std::list<Student>&, std::list<Student>&);
+void makeGroupsList (std::list<Student>&, std::list<Student>&, std::list<Student>&, int);
 void sortList (std::list<Student>&, std::list<Student>&, char);
 void writeToFileList (std::list<Student>&, char, std::string);
-
-#endif
