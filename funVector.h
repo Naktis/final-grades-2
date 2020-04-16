@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "libraries.h"
+#include "student.h"
 
 // Data generation
 void generateGradesManuallyVector (Student*);

@@ -19,7 +19,7 @@ void generateGradesManuallyDeque (Student* S, char finalType) {
     std::cout << "Sugeneruotas egzamino balas: " << exam << "\n";
     
     // Calculate the final grade and add it to the structure
-    S->final = finalGradeDeque(HW, exam, finalType);
+    S->setFinal(finalGradeDeque(HW, exam, finalType));
 }
 
 double averageDeque (std::deque<int> &HW, int n) {
@@ -51,12 +51,15 @@ void readEnteredDataDeque (std::deque<Student> &S, char inputType, char finalTyp
     Student temp;      // Temporary structure to be filled in before pushing back to the deque
     std::deque<int> HW;// Deque of hw grades
     int exam;
+    std::string tempName, tempSurname;
     do {
         moreHW = true;
         HW.clear();    // Empty the deque for new values
 
         std::cout << "\nStudento vardas ir pavarde:\n";
-        std::cin >> temp.name >> temp.surname;
+        std::cin >> tempName >> tempSurname;
+        temp.setName(tempName);
+        temp.setSurname(tempSurname);
 
         if (inputType == 'g')
             generateGradesManuallyDeque(&temp, finalType); // Generate homework and exam grades
@@ -74,7 +77,7 @@ void readEnteredDataDeque (std::deque<Student> &S, char inputType, char finalTyp
             std::cout << "\nEgzamino balas:\n";
             std::cin >> exam;
             numberInputValidation(exam, 1, 10);
-            temp.final = finalGradeDeque(HW, exam, finalType);
+            temp.setFinal(finalGradeDeque(HW, exam, finalType));
         }
         S.push_back(temp);                      // Add the structure to the deque of student data
 
@@ -98,20 +101,23 @@ void readFileDeque (std::deque<Student> &S, std::string fileName, char finalType
 
     Student temp;
     int tempHW, exam;
-    std::string row;
+    std::string row, tempName, tempSurname;
     std::istringstream dataRow;
     std::deque<int> HW;
     while (std::getline(fd, row)) {      // Continue reading until the end of file is reached (raised error flag)
         dataRow.clear();
         dataRow.str(row);
-        dataRow >> temp.name >> temp.surname;
+        dataRow >> tempName >> tempSurname;
+        temp.setName(tempName);
+        temp.setSurname(tempSurname);
+
         HW.clear();                      // Empty the temporary homework deque and fill it with grades from the file
         for (int i = 0; i < numOfHW; i ++) {
             dataRow >> tempHW;
             HW.push_back(tempHW);
         }
         dataRow >> exam;
-        temp.final = finalGradeDeque(HW, exam, finalType);
+        temp.setFinal(finalGradeDeque(HW, exam, finalType));
         S.push_back(temp);               // Push the temporary structure to the deque of structures
     }
 	fd.close();
@@ -119,11 +125,11 @@ void readFileDeque (std::deque<Student> &S, std::string fileName, char finalType
 
 void makeGroupsDeque (std::deque<Student> &S, std::deque<Student> &GS, std::deque<Student> &BS, int strategy) {
     // Sort students by their final grades
-    std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.final < s2.final;}); 
+    std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.getFinal() < s2.getFinal();}); 
 
     // Count the number of students with final grade < 5
     int numOfBadStudents = 0;
-    while (S[numOfBadStudents].final < 5.0 && numOfBadStudents != S.size())
+    while (S[numOfBadStudents].getFinal() < 5.0 && numOfBadStudents != S.size())
         numOfBadStudents ++;
 
     std::copy(S.begin() + numOfBadStudents, S.end(), std::back_inserter(GS));       // Copy good students
@@ -136,11 +142,11 @@ void makeGroupsDeque (std::deque<Student> &S, std::deque<Student> &GS, std::dequ
 
 void sortDeque (std::deque<Student> &S, std::deque<Student> &GS, char sortType) {
     if (sortType == 'v') {
-        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
-        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.name < s2.name;});
+        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.getName() < s2.getName();});
+        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.getName() < s2.getName();});
     } else if (sortType == 'p') {
-        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
-        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+        std::sort(S.begin(), S.end(), [](Student &s1, Student &s2) {return s1.getSurname() < s2.getSurname();});
+        std::sort(GS.begin(), GS.end(), [](Student &s1, Student &s2) {return s1.getSurname() < s2.getSurname();});
     }
 }
 
@@ -157,8 +163,8 @@ void writeToFileDeque (std::deque<Student> &S, char finalType, std::string fileN
     // Print students' data
     for (int i = 0; i < S.size(); i ++) {
         row.str("");        // Empty the row stream and add single student's data
-        row << std::setw(20) << std::left << S[i].name << std::setw(20) << S[i].surname
-            << std::fixed << std::setprecision(2) << S[i].final << "\n";
+        row << std::setw(20) << std::left << S[i].getName() << std::setw(20) << S[i].getSurname()
+            << std::fixed << std::setprecision(2) << S[i].getFinal() << "\n";
         fr << row.str();    // Print the completed row
     }
     fr.close();

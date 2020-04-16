@@ -19,7 +19,7 @@ void generateGradesManuallyList (Student* S, char finalType) {
     std::cout << "Sugeneruotas egzamino balas: " << exam << "\n";
     
     // Calculate the final grade and add it to the structure
-    S->final = finalGradeList(HW, exam, finalType);
+    S->setFinal(finalGradeList(HW, exam, finalType));
 }
 
 double averageList (std::list<int> &HW, int n) {
@@ -58,12 +58,15 @@ void readEnteredDataList (std::list<Student> &S, char inputType, char finalType)
     std::list<int> HW;
     Student temp;     // Temporary structure to be filled in before pushing back to the list
     int exam;
+    std::string tempName, tempSurname;
     do {
         moreHW = true;
         HW.clear();   // Empty the list for new values
 
         std::cout << "\nStudento vardas ir pavarde:\n";
-        std::cin >> temp.name >> temp.surname;
+        std::cin >> tempName >> tempSurname;
+        temp.setName(tempName);
+        temp.setSurname(tempSurname);
 
         if (inputType == 'g')
             generateGradesManuallyList(&temp, finalType); // Generate homework and exam grades
@@ -80,7 +83,7 @@ void readEnteredDataList (std::list<Student> &S, char inputType, char finalType)
             std::cout << "\nEgzamino balas:\n";
             std::cin >> exam;
             numberInputValidation(exam, 1, 10);
-            temp.final = finalGradeList(HW, exam, finalType);
+            temp.setFinal(finalGradeList(HW, exam, finalType));
         }
         S.push_back(temp);                      // Add the structure to the list of student data
 
@@ -104,20 +107,23 @@ void readFileList (std::list<Student> &S, std::string fileName, char finalType) 
 
     Student temp;
     int tempHW, exam;
-    std::string row;
+    std::string row, tempName, tempSurname;
     std::stringstream dataRow;
     std::list<int> HW;
     while (std::getline(fd, row)) { // Continue reading until the end of file is reached (raised error flag)
         dataRow.clear();
         dataRow.str(row);
-        dataRow >> temp.name >> temp.surname;
+        dataRow >> tempName >> tempSurname;
+        temp.setName(tempName);
+        temp.setSurname(tempSurname);
+
         HW.clear();                 // Empty the temporary homework list and fill it with grades from the file
         for (int i = 0; i < numOfHW; i ++) {
             dataRow >> tempHW;
             HW.push_back(tempHW);
         }
         dataRow >> exam;
-        temp.final = finalGradeList(HW, exam, finalType);
+        temp.setFinal(finalGradeList(HW, exam, finalType));
         S.push_back(temp);          // Push the temporary structure to the list of structures
     }
 	fd.close();
@@ -125,12 +131,12 @@ void readFileList (std::list<Student> &S, std::string fileName, char finalType) 
 
 void makeGroupsList (std::list<Student> &S, std::list<Student> &GS, std::list<Student> &BS, int strategy) {
     // Sort students by their final grades
-    S.sort([](Student &s1, Student &s2) {return s1.final < s2.final;});
+    S.sort([](Student &s1, Student &s2) {return s1.getFinal() < s2.getFinal();});
 
     // Count the number of students with final grade < 5
     int numOfBadStudents = 0;
     auto it = S.begin();
-    while (it->final < 5.0 && it != S.end()) {
+    while (it->getFinal() < 5.0 && it != S.end()) {
         numOfBadStudents ++;
         it ++;
     }
@@ -144,11 +150,11 @@ void makeGroupsList (std::list<Student> &S, std::list<Student> &GS, std::list<St
 
 void sortList (std::list<Student> &S, std::list<Student> &GS, char sortType) {
     if (sortType == 'v') {
-        S.sort([](Student &s1, Student &s2) {return s1.name < s2.name;});
-        GS.sort([](Student &s1, Student &s2) {return s1.name < s2.name;});
+        S.sort([](Student &s1, Student &s2) {return s1.getName() < s2.getName();});
+        GS.sort([](Student &s1, Student &s2) {return s1.getName() < s2.getName();});
     } else if (sortType == 'p') {
-        S.sort([](Student &s1, Student &s2) {return s1.surname < s2.surname;});
-        GS.sort([](Student &s1, Student &s2) {return s1.surname < s2.surname;});
+        S.sort([](Student &s1, Student &s2) {return s1.getSurname() < s2.getSurname();});
+        GS.sort([](Student &s1, Student &s2) {return s1.getSurname() < s2.getSurname();});
     }
 }
 
@@ -167,8 +173,8 @@ void writeToFileList (std::list<Student> &S, char finalType, std::string fileNam
     auto it = S.begin();
     for (auto it = S.begin(); it != S.end(); it ++) {
         row.str("");        // Empty the row stream and add single student's data
-        row << std::setw(20) << std::left << it->name << std::setw(20) << it->surname
-            << std::fixed << std::setprecision(2) << it->final << "\n";
+        row << std::setw(20) << std::left << it->getName() << std::setw(20) << it->getSurname()
+            << std::fixed << std::setprecision(2) << it->getFinal() << "\n";
         fr << row.str();    // Print the completed row
     }
     fr.close();

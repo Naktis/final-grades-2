@@ -1,5 +1,5 @@
-main: validation.o file.o funList.o funVector.o funDeque.o containers.o
-	g++ -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o
+main: validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
+	g++ -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
 validation:
 	g++ -c validation.cpp
 file:
@@ -12,6 +12,8 @@ funDeque:
 	g++ -c funDeque.cpp
 containers:
 	g++ -c containers.cpp
+student:
+	g++ -c student.cpp
 clean-win:
 	del *.o main
 clean-unix:

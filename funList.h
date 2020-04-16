@@ -1,7 +1,7 @@
 #pragma once
 
 #include <list>
-#include "libraries.h"
+#include "student.h"
 
 // Data generation
 void generateGradesManuallyList (Student*, char);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libraries.h"
+#include "student.h"
 
 template <typename T>
 void reenterInput(T&);
