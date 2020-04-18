@@ -1,6 +1,6 @@
 #include "containers.h"
 
-void vector (char inputType, char finalType, char sortType, int strategy, char measure, char advanced, std::string fileName) {
+void vectorContainer (char inputType, char finalType, char sortType, int strategy, char measure, char advanced, std::string fileName) {
     std::vector<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
     S.reserve(10000000);            // Max capacity to avoid memory overallocation
     Timer t;
@@ -35,7 +35,7 @@ void vector (char inputType, char finalType, char sortType, int strategy, char m
     if (measure == 't') std::cout << "Nepazangiuju rezultatu irasymas uztruko:\t" << t.elapsed() << "s\n";
 }
 
-void deque (char inputType, char finalType, char sortType, int strategy, char measure, std::string fileName) {
+void dequeContainer (char inputType, char finalType, char sortType, int strategy, char measure, std::string fileName) {
     std::deque<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
     Timer t;
 
@@ -68,7 +68,7 @@ void deque (char inputType, char finalType, char sortType, int strategy, char me
     if (measure == 't') std::cout << "Nepazangiuju rezultatu irasymas uztruko:\t" << t.elapsed() << "s\n";
 }
 
-void list (char inputType, char finalType, char sortType, int strategy, char measure, std::string fileName) {
+void listContainer (char inputType, char finalType, char sortType, int strategy, char measure, std::string fileName) {
     std::list<Student> S, GS, BS; // All students (S), good students (GS), bad students (BS)
     Timer t;
 

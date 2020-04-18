@@ -73,17 +73,14 @@ int main () {
                 measure == 't' ? std::cout << " - " << t.elapsed() << "s \n" : std::cout << " sugeneruotas\n";
                 mulitplier *= 10;
             }
-        }
 
-        // Select the number of files to read
-        if (newFiles == 't') {
+            // Select the number of files to read
             std::cout << "\nKiek failu norite perskaityti? (t/n)\n";
             std::cout << "Visus sugeneruotus:\t5\nTik viena:\t\t1\n"; 
             std::cin >> fileCount;
             optionalInputValidation(fileCount, '5', '1');
-        };
+        }
     }
-
 
     // Read, group, sort and print data
     std::string fileName;
@@ -91,11 +88,15 @@ int main () {
         if (inputType == 'f')
             fileCount == '5' ? fileName = genFiles[i] : fileName = getFileName();
 
+        if (measure == 't') t.set();
+
         if (container == 'v')
-            vector(inputType, finalType, sortType, strategy, measure, advanced, fileName);
+            vectorContainer(inputType, finalType, sortType, strategy, measure, advanced, fileName);
         else if (container == 'd')
-            deque(inputType, finalType, sortType, strategy, measure, fileName);
-        else list(inputType, finalType, sortType, strategy, measure, fileName);
+            dequeContainer(inputType, finalType, sortType, strategy, measure, fileName);
+        else listContainer(inputType, finalType, sortType, strategy, measure, fileName);
+
+        if (measure == 't') std::cout << "Is viso:\t\t\t\t\t" << t.elapsed() << "s \n";
         if (fileCount == '5') std::cout << "(" << i + 1 << "/5)\n";
     }
 

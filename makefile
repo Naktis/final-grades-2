@@ -1,19 +1,21 @@
+OFLAG = -O2
+
 main: validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
-	g++ -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
+	g++ $(OFLAG) -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
 validation:
-	g++ -c validation.cpp
+	g++  -c $(OFLAG) validation.cpp
 file:
-	g++ -c file.cpp
+	g++  -c $(OFLAG) file.cpp
 funList:
-	g++ -c funList.cpp
+	g++ $(OFLAG) -c funList.cpp
 funVector:
-	g++ -c funVector.cpp
+	g++ $(OFLAG) -c funVector.cpp
 funDeque:
-	g++ -c funDeque.cpp
+	g++ $(OFLAG) -c funDeque.cpp
 containers:
-	g++ -c containers.cpp
+	g++ $(OFLAG) -c containers.cpp
 student:
-	g++ -c student.cpp
+	g++ $(OFLAG) -c student.cpp
 clean-win:
 	del *.o main
 clean-unix:
