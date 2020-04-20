@@ -3,9 +3,9 @@ OFLAG = -O2
 main: validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
 	g++ $(OFLAG) -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
 validation:
-	g++  -c $(OFLAG) validation.cpp
+	g++ $(OFLAG) -c  validation.cpp
 file:
-	g++  -c $(OFLAG) file.cpp
+	g++ $(OFLAG) -c  file.cpp
 funList:
 	g++ $(OFLAG) -c funList.cpp
 funVector:

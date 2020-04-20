@@ -107,12 +107,12 @@ Tik viena:              1
 Iveskite failo varda formatu failo_pav.txt
 kursiokai100000.txt
 
-kursiokai100000.txt failo skaitymas uztruko:    0.938525s
-Studentu grupavimas uztruko:                    0.078173s
-Rezultatu rusiavimas uztruko:                   1.03207s
-Pazangiuju rezultatu irasymas uztruko:          0.382569s
-Nepazangiuju rezultatu irasymas uztruko:        0.33717s
-Is viso:                                        2.82757s
+kursiokai100000.txt failo skaitymas uztruko:    0.55751s
+Studentu grupavimas uztruko:                    0.041899s
+Rezultatu rusiavimas uztruko:                   0.7889s
+Pazangiuju rezultatu irasymas uztruko:          0.327126s
+Nepazangiuju rezultatu irasymas uztruko:        0.218417s
+Is viso:                                        1.97372s
 
 Programos pabaiga
 
@@ -135,9 +135,9 @@ Programos parametrai (čia ir toliau): naudojamas vektoriaus konteineris, skirst
 
 | Studentų kiekis | Struct   | Class    |
 | --------------- | -------- | -------- |
-| 100000          | 1.93792s | 2.82757s |
-| 1000000         | 19.6742s | 31.6903s |
-| 10000000        | 193.238s | 323.366s |
+| 100000          | 1.32942s | 1.97372s |
+| 1000000         | 13.5805s | 20.396s  |
+| 10000000        | 141.079s | 209.019s |
 
 Programos, realizuotos su *class*, veikimo trukmė su visais studentų kiekiais viršija *struct* realizacijos veikimo trukmę. Jai įtaką gali daryti tai, kad *struct* realizacijoje studentų duomenys yra vieši, o *class* - privatūs, todėl jiems pasiekti ir keisti naudojami atitinkami metodai, kurie kaip papildomi veiksmai prailgina veikimo trukmę.
 
@@ -145,9 +145,9 @@ Programos, realizuotos su *class*, veikimo trukmė su visais studentų kiekiais 
 
 | Studentų kiekis | O0       | O1       | O2       | O3       |
 | --------------- | -------- | -------- | -------- | -------- |
-| 100000          | 2.82757s | 2.74946s | 2.71885s | 2.72981s |
-| 1000000         | 31.6903s | 27.0127s | 26.9266s | 26.9272s |
-| 10000000        | 323.366s | 276.599s | 275.994s | 275.59s  |
+| 100000          | 1.97372s | 1.78822s | 1.86253s | 1.85807s |
+| 1000000         | 20.396s  | 19.5236s | 18.5249s | 18.6028s |
+| 10000000        | 209.019s | 205.421s | 204.804s | 204.318s |
 
 Optimizavimo vėliavėlės padidino programos veikimo spartą su visais testuotais duomenų kiekiais. Skirtumas tarp jų nežymus, bet kaip efektyviausias programai galima išskirti O2 ir O3 vėliavėles.
 
