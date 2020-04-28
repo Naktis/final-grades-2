@@ -1,4 +1,4 @@
-#include "containers.h"
+#include "utility.h"
 
 int main () {
     Timer t;
@@ -16,20 +16,11 @@ int main () {
     std::cin >> inputType;
     optionalInputValidation(inputType, 'f', 'g', 'r');
 
-    // Select a std container
-    char container;
-    std::cout << "\nPasirinkite konteineri darbui su duomenimis: \n";
-    std::cout << "std::vector:\tv\nstd::list:\tl\nstd::deque:\td\n";
-    std::cin >> container;
-    optionalInputValidation(container, 'v', 'l', 'd');
-
     // Select optimization algorithms
     char advanced;
-    if (container == 'v') {
-        std::cout << "\nAr norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)\n";
-        std::cin >> advanced;
-        optionalInputValidation(advanced, 't', 'n');
-    }
+    std::cout << "\nAr norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)\n";
+    std::cin >> advanced;
+    optionalInputValidation(advanced, 't', 'n');
 
     // Select final grade calculation method (median or average)
     char finalType;
@@ -89,12 +80,8 @@ int main () {
             fileCount == '5' ? fileName = genFiles[i] : fileName = getFileName();
 
         if (measure == 't') t.set();
-
-        if (container == 'v')
-            vectorContainer(inputType, finalType, sortType, strategy, measure, advanced, fileName);
-        else if (container == 'd')
-            dequeContainer(inputType, finalType, sortType, strategy, measure, fileName);
-        else listContainer(inputType, finalType, sortType, strategy, measure, fileName);
+        
+        utility(inputType, finalType, sortType, strategy, measure, advanced, fileName);
 
         if (measure == 't') std::cout << "Is viso:\t\t\t\t\t" << t.elapsed() << "s \n";
         if (fileCount == '5') std::cout << "(" << i + 1 << "/5)\n";
