@@ -35,24 +35,22 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 	- Jei naudojate *GCC* su *GNU Make*, įrašykite komandą`make`
 	- Jei naudojate *GCC* be *GNU Make*, įrašykite: 
 	
-	`g++ -c main.cpp validation.cpp file.cpp funList.cpp funVector.cpp funDeque.cpp containers.cpp student.cpp`
+	`g++ -c main.cpp validation.cpp iodata.cpp modification.cpp utility.cpp student.cpp`
 	
-	`g++ -o main main.o validation.o file.o funList.o funVector.o funDeque.o containers.o student.o`
-5. Paleiskite programą su `./main` (unix) arba `main` (windows)
-6. Pasirinkite norimus programos darbo parametrus pagal nurodymus ekrane
+	`g++ -o main main.o validation.o iodata.o modification.o utility.o student.o`
+1. Paleiskite programą su `./main` (unix) arba `main` (windows)
+2. Pasirinkite norimus programos darbo parametrus pagal nurodymus ekrane
 
 ### Diegimo ir naudojimosi programa pavyzdys
 
 ```
 C:...>make
 g++    -c -o validation.o validation.cpp
-g++    -c -o file.o file.cpp
-g++    -c -o funList.o funList.cpp
-g++    -c -o funVector.o funVector.cpp
-g++    -c -o funDeque.o funDeque.cpp
-g++    -c -o containers.o containers.cpp
+g++    -c -o iodata.o iodata.cpp
+g++    -c -o modification.o modification.cpp
+g++    -c -o utility.o utility.cpp
 g++    -c -o student.o student.cpp
-g++ -O2 -o main main.cpp validation.o file.o funList.o funVector.o funDeque.o containers.o student.o
+g++ -O2 -o main main.cpp validation.o iodata.o modification.o utility.o student.o
 
 C:...>main
 Ar norite matuoti kiekvieno programos etapo trukme? (t/n)
@@ -63,12 +61,6 @@ Skaitymas is failo:       f
 Atsitiktinis generavimas: g
 Rankinis ivedimas:        r
 f
-
-Pasirinkite konteineri darbui su duomenimis:
-std::vector:    v
-std::list:      l
-std::deque:     d
-v
 
 Ar norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)
 t
