@@ -8,16 +8,15 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 
 ## Naudotojo galimybės
 
- - Pasirinkti, kokį STL konteinerį (vector, deque, list) naudoti darbui su duomenimis
- - Pasirinkti duomenų failų generavimą
+ - Pasirinkti kiekvieno programos etapo trukmes matavimą
  - Pasirinkti, ar studento duomenis skaityti iš failo, ar generuoti atsitiktinai, ar įvesti ranka
+ - Pasirinkti duomenų failų generavimą
  - Pasirinkti, ar skaityti visus 5 sugeneruotus failus, ar tik vieną
  - Įvesti skaitomo duomenų failo pavadinimą
  - Pasirinkti, ar namų darbų balu bus laikomas jų vidurkis, ar mediana
  - Pasirinkti rezultatų rūšiavimo būdą (pagal vardą, pavardę ar galutinį balą)
- - Pasirinkti, ar naudoti programą spartinančius algoritmus su *std::vector* konteineriu
+ - Pasirinkti programą spartinančių algoritmų naudojimą
  - Pasirinkti studentų rūšiavimui naudojamų naujų konteinerių kiekį - 1 arba 2
- - Pasirinkti kiekvieno programos etapo trukmes matavimą
  
  Jei pasirenkamas balų generavimas arba įvedimas ranka, suteikiama galimybė
  - Įvesti studento vardą, pavardę
@@ -111,9 +110,26 @@ Programos pabaiga
 C:...>
 ```
 
+## Programos failų turinys:
+ - *main.cpp* : pagrindinė funkcija, naudotojo pageidaujamų parametrų pasirinkimas
+ - *validation.cpp + validation.h* : funkcijos, tikrinančios naudotojo įvestus duomenis
+ - *utility.cpp + utility.h* : funkcija, kurianti studentų vektorių, kviečianti laiko matavimo, duomenų skaitymo, modifikavimo ir rašymo funkcijas
+ - *iodata.cpp + iodata.h* : funkcijos, skaitančios ir įrašančios duomenis
+ - *modification.cpp + modification.h* : funkcijos, modifikuojančios duomenis (galutinio balo skaičiavimas, duomenų grupavimas ir rūšiavimas)
+ - *student.h + student.cpp* : studento duomenų klasė ir jos funkcijos
+ - *timer.h* : laikmačio klasė
+
 -------------------------------------
 
 # Versijos
+
+## [v1.2](https://github.com/Naktis/final-grades-2/releases/tag/v1.2)
+### Patobulinimai
+ - Studento klasei sukurtas copy-konstruktorius ir copy-assignment operatorius
+ - Perkrauti +, -, /, ==, >> ir << operatoriai
+ - Perkrauti operatoriai pritaikyti seniau sukurtose funkcijose
+ - Programos optimizacijai panaikintos std::list ir std::deque realizacijos, atitinkamai reorganizuotas kodas
+ - Platesniam pritaikomumui rūšiavime naudotos *lambda* funkcijos pakeistos *Student* klasės funkcijomis
 
 ## [v1.1](https://github.com/Naktis/final-grades-2/releases/tag/v1.1)
 ### Patobulinimai
