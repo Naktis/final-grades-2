@@ -61,14 +61,14 @@ void makeGroups (std::vector<Student> &S, std::vector<Student> &GS, std::vector<
 }
 
 void sort (std::vector<Student> &S1, std::vector<Student> &S2, char sortType) {
-    if (sortType == 'v') {
-        std::sort(S1.begin(), S1.end(), [](Student &s1, Student &s2) {return s1.getName() < s2.getName();});
-        std::sort(S2.begin(), S2.end(), [](Student &s1, Student &s2) {return s1.getName() < s2.getName();});
-    } else if (sortType == 'p') {
-        std::sort(S1.begin(), S1.end(), [](Student &s1, Student &s2) {return s1.getSurname() < s2.getSurname();});
-        std::sort(S2.begin(), S2.end(), [](Student &s1, Student &s2) {return s1.getSurname() < s2.getSurname();});
-    } else {
-        std::sort(S1.begin(), S1.end(), [](Student &s1, Student &s2) {return s1.getFinal() < s2.getFinal();});
-        std::sort(S2.begin(), S2.end(), [](Student &s1, Student &s2) {return s1.getFinal() < s2.getFinal();});
+    if (sortType == 'v') {          // Name sorting
+        std::sort(S1.begin(), S1.end(), compareNames);
+        std::sort(S2.begin(), S2.end(), compareNames);
+    } else if (sortType == 'p') {   // Surname sorting
+        std::sort(S1.begin(), S1.end(), compareSurnames);
+        std::sort(S2.begin(), S2.end(), compareSurnames);
+    } else {                        // Final grade sorting
+        std::sort(S1.begin(), S1.end(), compareFinals);
+        std::sort(S2.begin(), S2.end(), compareFinals);
     }
 }

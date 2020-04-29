@@ -169,11 +169,8 @@ void writeToFile (std::vector<Student> &S, char finalType, std::string fileName)
     fr << "--------------------------------------------------------\n";
 
     // Print students' data
-    for (int i = 0; i < S.size(); i ++) {
-        row.str("");        // Empty the row stream and add single student's data
-        row << std::setw(20) << std::left << S[i].getName() << std::setw(20) << S[i].getSurname()
-            << std::fixed << std::setprecision(2) << S[i].getFinal() << "\n";
-        fr << row.str();    // Print the completed row
-    }
+    for (int i = 0; i < S.size(); i ++)
+        fr << S[i];
+
     fr.close();
 }

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 
 class Student {
@@ -9,19 +10,40 @@ class Student {
         std::string name, surname;
         double final;
     public:
+        // Constructors and a destructor
         Student() : final(0) { };
-        Student(std::string, std::string, double);
-        Student(const Student&);            // Copy constructor
-
+        Student(std::string newName, std::string newSurname, double newFinal);
+        Student(const Student& origin) { setAll(origin.name, origin.surname, origin.final); } // Copy
         ~Student() { };
 
-        void setName(std::string);
-        void setSurname(std::string);
-        void setFinal(double);
+        // Setters
+        void setName(std::string newName) { name = newName; }
+        void setSurname(std::string newSurname) { surname = newSurname; }
+        void setFinal(double newFinal) { final = newFinal; }
         void setAll(std::string, std::string, double);
+
+        // Getters
         inline std::string getName() const { return name; }
         inline std::string getSurname() const { return surname; }
         inline double getFinal() const { return final; }
 
-        Student& operator=(const Student&); // Copy assignment operator
+        // Operators
+        Student& operator = (const Student&); // Copy assignment operator
+        bool operator == (const Student&);    // Can be used for != comparison
+        double operator + (const Student& other) { return final + other.final; }
+        double operator - (const Student& other) { return final - other.final; }
+        double operator / (const Student& other) { return final / other.final; }
+
+        friend std::istream& operator >> (std::istream&, Student&);
+        friend std::ostream& operator << (std::ostream&, const Student&);
+
+        // Comparison functions for sorting
+        friend bool compareNames (const Student& A, const Student& B) {return A.name < B.surname;}
+        friend bool compareSurnames (const Student& A, const Student& B) {return A.surname < B.surname;}
+        friend bool compareFinals (const Student& A, const Student& B) {return A.final < B.final;}
 };
+
+// Declarations for global visibility of functions
+extern bool compareNames(const Student&, const Student&);
+extern bool compareSurnames(const Student&, const Student&);
+extern bool compareFinals(const Student&, const Student&);
