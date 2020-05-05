@@ -4,27 +4,20 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include "person.h"
 
-class Student {
+class Student : public Person {
     private:
-        std::string name, surname;
         double final;
     public:
         // Constructors and a destructor
         Student() : final(0) { };
         Student(std::string newName, std::string newSurname, double newFinal);
         Student(const Student& origin) { setAll(origin.name, origin.surname, origin.final); } // Copy
-        ~Student() { };
 
-        // Setters
-        void setName(std::string newName) { name = newName; }
-        void setSurname(std::string newSurname) { surname = newSurname; }
+        // Set and get methods
         void setFinal(double newFinal) { final = newFinal; }
         void setAll(std::string, std::string, double);
-
-        // Getters
-        inline std::string getName() const { return name; }
-        inline std::string getSurname() const { return surname; }
         inline double getFinal() const { return final; }
 
         // Operators
@@ -41,6 +34,8 @@ class Student {
         friend bool compareNames (const Student& A, const Student& B) {return A.name < B.surname;}
         friend bool compareSurnames (const Student& A, const Student& B) {return A.surname < B.surname;}
         friend bool compareFinals (const Student& A, const Student& B) {return A.final < B.final;}
+
+        void print() { std::cout << *this; }
 };
 
 // Declarations for global visibility of functions
