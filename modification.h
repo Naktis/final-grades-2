@@ -10,5 +10,5 @@ double median (std::vector<int>*, int);
 double finalGrade (std::vector<int>&, int, char);
 
 // Data reordering
-void makeGroups (std::vector<Student>&, std::vector<Student>&, std::vector<Student>&, int, char);
+void makeGroups (std::vector<Student>&, std::vector<Student>&);
 void sort (std::vector<Student>&, std::vector<Student>&, char);

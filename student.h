@@ -14,6 +14,7 @@ class Student : public Person {
         Student() : final(0) { };
         Student(std::string newName, std::string newSurname, double newFinal);
         Student(const Student& origin) { setAll(origin.name, origin.surname, origin.final); } // Copy
+        ~Student() { };
 
         // Set and get methods
         void setFinal(double newFinal) { final = newFinal; }
@@ -31,7 +32,7 @@ class Student : public Person {
         friend std::ostream& operator << (std::ostream&, const Student&);
 
         // Comparison functions for sorting
-        friend bool compareNames (const Student& A, const Student& B) {return A.name < B.surname;}
+        friend bool compareNames (const Student& A, const Student& B) {return A.name < B.name;}
         friend bool compareSurnames (const Student& A, const Student& B) {return A.surname < B.surname;}
         friend bool compareFinals (const Student& A, const Student& B) {return A.final < B.final;}
 

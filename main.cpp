@@ -16,25 +16,12 @@ int main () {
     std::cin >> inputType;
     optionalInputValidation(inputType, 'f', 'g', 'r');
 
-    // Select optimization algorithms
-    char advanced;
-    std::cout << "\nAr norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)\n";
-    std::cin >> advanced;
-    optionalInputValidation(advanced, 't', 'n');
-
     // Select final grade calculation method (median or average)
     char finalType;
     std::cout << "\nPasirinkite namu darbu skaiciavimo buda:";
     std::cout << "\nMediana:\tm\nVidurkis:\tv\n";
     std::cin >> finalType;
     optionalInputValidation(finalType, 'm', 'v');
-
-    // Select data partition strategy
-    int strategy;
-    std::cout << "\nPasirinkite studentu skirstymo i kategorijas strategija: \n";
-    std::cout << "Kurti du naujus konteinerius:\t1\nKurti viena nauja konteineri: \t2\n";
-    std::cin >> strategy;
-    numberInputValidation(strategy, 1, 2);
 
     // Select sorting type (alphabetically of by final grades)
     char sortType;
@@ -81,7 +68,7 @@ int main () {
 
         if (measure == 't') t.set();
         
-        utility(inputType, finalType, sortType, strategy, measure, advanced, fileName);
+        utility(inputType, finalType, sortType, measure, fileName);
 
         if (measure == 't') std::cout << "Is viso:\t\t\t\t\t" << t.elapsed() << "s \n";
         if (fileCount == '5') std::cout << "(" << i + 1 << "/5)\n";
