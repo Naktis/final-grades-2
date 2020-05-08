@@ -10,13 +10,11 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 
  - Pasirinkti kiekvieno programos etapo trukmes matavimą
  - Pasirinkti, ar studento duomenis skaityti iš failo, ar generuoti atsitiktinai, ar įvesti ranka
+ - Pasirinkti, ar namų darbų balu bus laikomas jų vidurkis, ar mediana
+ - Pasirinkti rezultatų rūšiavimo būdą (pagal vardą, pavardę ar galutinį balą)
  - Pasirinkti duomenų failų generavimą
  - Pasirinkti, ar skaityti visus 5 sugeneruotus failus, ar tik vieną
  - Įvesti skaitomo duomenų failo pavadinimą
- - Pasirinkti, ar namų darbų balu bus laikomas jų vidurkis, ar mediana
- - Pasirinkti rezultatų rūšiavimo būdą (pagal vardą, pavardę ar galutinį balą)
- - Pasirinkti programą spartinančių algoritmų naudojimą
- - Pasirinkti studentų rūšiavimui naudojamų naujų konteinerių kiekį - 1 arba 2
  
  Jei pasirenkamas balų generavimas arba įvedimas ranka, suteikiama galimybė
  - Įvesti studento vardą, pavardę
@@ -61,18 +59,10 @@ Atsitiktinis generavimas: g
 Rankinis ivedimas:        r
 f
 
-Ar norite naudoti studentu skirstyma spartinancius algoritmus? (t/n)
-t
-
 Pasirinkite namu darbu skaiciavimo buda:
 Mediana:        m
 Vidurkis:       v
 v
-
-Pasirinkite studentu skirstymo i kategorijas strategija:
-Kurti du naujus konteinerius:   1
-Kurti viena nauja konteineri:   2
-2
 
 Pasirinkite rezultatu rusiavimo buda:
 Abeceliskai pagal varda:        v
@@ -116,12 +106,18 @@ C:...>
  - *utility.cpp + utility.h* : funkcija, kurianti studentų vektorių, kviečianti laiko matavimo, duomenų skaitymo, modifikavimo ir rašymo funkcijas
  - *iodata.cpp + iodata.h* : funkcijos, skaitančios ir įrašančios duomenis
  - *modification.cpp + modification.h* : funkcijos, modifikuojančios duomenis (galutinio balo skaičiavimas, duomenų grupavimas ir rūšiavimas)
- - *student.h + student.cpp* : studento duomenų klasė ir jos funkcijos
+ - *person.h* : abstrakti bazinė žmogaus duomenų klasė
+ - *student.h + student.cpp* : studento duomenų klasė, padaryta *person* klasės pagrindu, ir jos funkcijos
  - *timer.h* : laikmačio klasė
 
 -------------------------------------
 
 # Versijos
+## [v1.5](https://github.com/Naktis/final-grades-2/releases/tag/v1.5)
+### Patobulinimai
+ - Sukurta abstrakti bazinė *person* klasė
+ - *Student* klasė paversta *person* klasės išvestine klase
+ - Duomenų grupavimo strategijos ir naujų konteinerių kiekio pasirinkimai pakeisti optimaliausiais, atsižvelgiant į ankstesnių versijų analizes
 
 ## [v1.2](https://github.com/Naktis/final-grades-2/releases/tag/v1.2)
 ### Patobulinimai
