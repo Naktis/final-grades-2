@@ -1,14 +1,16 @@
 #include "modification.h"
 
-double average (std::vector<int> &HW, int n) {
+double average (std::vector<int> &HW) {
     double sum = 0;
+    int n = HW.size();
     for (int i = 0; i < n; i ++)
         sum += HW[i];
     return (sum / n); // Division by zero isn't possible since the function can't be called when n = 0
 }
 
-double median (std::vector<int> &HW, int n) {
+double median (std::vector<int> &HW) {
     double m;
+    int n = HW.size();
     std::sort(HW.begin(), HW.end());
     n % 2 == 0 ? (m = 1.00 * (HW[n / 2 - 1] + HW[n / 2]) / 2) : m = HW[n / 2];
     return m;
@@ -17,7 +19,7 @@ double median (std::vector<int> &HW, int n) {
 double finalGrade (std::vector<int> &HW, int exam, char type) {
     double hw;
     if (!HW.empty())  // Calculate the homework grade only if the homework list isn't empty
-        type == 'm' ? hw = median(HW, HW.size()) : hw = average(HW, HW.size());
+        type == 'm' ? hw = median(HW) : hw = average(HW);
     else hw = 0;
     return (0.4 * hw + 0.6 * exam);
 }

@@ -17,8 +17,12 @@ class Student : public Person {
         ~Student() { };
 
         // Set and get methods
+        void setName(std::string newName) { name = newName; }
+        void setSurname(std::string newSurname) { surname = newSurname; }
         void setFinal(double newFinal) { final = newFinal; }
         void setAll(std::string, std::string, double);
+        inline std::string getName() const { return name; }
+        inline std::string getSurname() const { return surname; }
         inline double getFinal() const { return final; }
 
         // Operators

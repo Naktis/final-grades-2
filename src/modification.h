@@ -5,8 +5,8 @@
 #include "student.h"
 
 // Final grade calculation
-double average (std::vector<int>&, int);
-double median (std::vector<int>*, int);
+double average (std::vector<int>&);
+double median (std::vector<int>&);
 double finalGrade (std::vector<int>&, int, char);
 
 // Data reordering
