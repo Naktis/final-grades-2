@@ -12,6 +12,8 @@ utility:
 	g++ $(OFLAG) -c utility.cpp
 student:
 	g++ $(OFLAG) -c student.cpp
+test: validation.o iodata.o modification.o utility.o student.o
+	g++ $(OFLAG) -o test test.cpp validation.o iodata.o modification.o utility.o student.o
 clean-win:
 	del *.o main
 clean-unix:
