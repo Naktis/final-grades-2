@@ -27,7 +27,7 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 
  1. Parsisiųsti programą iš versijų puslapio arba nuorodų apačioje
  2. Parsisiųsti ir įsidiegti C++ kompiliatorių (pvz. [GCC](https://gcc.gnu.org/))
- 3. Atsidaryti terminalą ir jame įvesti programos vietą diske
+ 3. Atsidaryti terminalą ir jame įvesti programos vietą diske, pasirinkti *src* aplanką
  4. Sukompiliuoti programą, pvz
 	- Jei naudojate *GCC* su *GNU Make*, įrašykite komandą`make`
 	- Jei naudojate *GCC* be *GNU Make*, įrašykite: 
@@ -35,13 +35,14 @@ C++ kalba sukurta programa, skaičiuojanti galutinius studentų balus pagal form
 	`g++ -c main.cpp validation.cpp iodata.cpp modification.cpp utility.cpp student.cpp`
 	
 	`g++ -o main main.o validation.o iodata.o modification.o utility.o student.o`
+	
 1. Paleiskite programą su `./main` (unix) arba `main` (windows)
-2. Pasirinkite norimus programos darbo parametrus pagal nurodymus ekrane
+2. Pasirinkite norimus programos darbo parametrus pagal nurodymus terminale
 
 ### Diegimo ir naudojimosi programa pavyzdys
 
 ```
-C:...>make
+C:...\src>make
 g++    -c -o validation.o validation.cpp
 g++    -c -o iodata.o iodata.cpp
 g++    -c -o modification.o modification.cpp
@@ -49,7 +50,7 @@ g++    -c -o utility.o utility.cpp
 g++    -c -o student.o student.cpp
 g++ -O2 -o main main.cpp validation.o iodata.o modification.o utility.o student.o
 
-C:...>main
+C:...\src>main
 Ar norite matuoti kiekvieno programos etapo trukme? (t/n)
 t
 
@@ -97,7 +98,7 @@ Is viso:                                        1.97372s
 
 Programos pabaiga
 
-C:...>
+C:...\src>
 ```
 
 ## Programos failų turinys:
@@ -109,10 +110,29 @@ C:...>
  - *person.h* : abstrakti bazinė žmogaus duomenų klasė
  - *student.h + student.cpp* : studento duomenų klasė, padaryta *person* klasės pagrindu, ir jos funkcijos
  - *timer.h* : laikmačio klasė
+ - *test.cpp* + *catch.hpp* : *unit* testai ir *Catch* framework
 
 -------------------------------------
 
 # Versijos
+## [v2.0](https://github.com/Naktis/final-grades-2/releases/tag/v2.0)
+### Patobulinimai
+ - Sugeneruota [Doxygen](http://www.doxygen.nl/index.html) dokumentacija
+ - Sukurti ir sėkmingai įveikti *unit* testai su [Catch](https://github.com/catchorg/Catch2) framework
+ - Peroranizuoti failai: .cpp, .h ir makefile perkelti į atskirą aplanką
+
+### *Unit testing*
+ [Testais](/src/test.cpp) patikrinta, ar tinkamai veikia:
+ - *Student* klasės palyginimo operatorius ==
+ - Studentų vardų, pavardžių ir galutinių balų lyginimas
+ - *Student* klasės *Copy assignment* operatorius
+ - Studentų galutinių balų +, -, / operatoriai
+ - Vidurkio skaičiavimas
+ - Medianos skaičiavimas
+ - Galutinio balo skaičiavimas
+  
+  ![test results](https://i.imgur.com/qArVeaq.jpg "Rezultatai")
+
 ## [v1.5](https://github.com/Naktis/final-grades-2/releases/tag/v1.5)
 ### Patobulinimai
  - Sukurta abstrakti bazinė *person* klasė
@@ -145,15 +165,25 @@ Programos parametrai (čia ir toliau): naudojamas vektoriaus konteineris, skirst
 
 Programos, realizuotos su *class*, veikimo trukmė su visais studentų kiekiais viršija *struct* realizacijos veikimo trukmę. Jai įtaką gali daryti tai, kad *struct* realizacijoje studentų duomenys yra vieši, o *class* - privatūs, todėl jiems pasiekti ir keisti naudojami atitinkami metodai, kurie kaip papildomi veiksmai prailgina veikimo trukmę.
 
-### Spartos analizė // Kompiliavimo vėliavėlių spartos palyginimas
+### Spartos analizė // Kompiliavimo vėliavėlių palyginimas
+#### Programos veikimo trukmė
 
 | Studentų kiekis | O0       | O1       | O2       | O3       |
 | --------------- | -------- | -------- | -------- | -------- |
-| 100000          | 1.97372s | 1.78822s | 1.86253s | 1.85807s |
-| 1000000         | 20.396s  | 19.5236s | 18.5249s | 18.6028s |
-| 10000000        | 209.019s | 205.421s | 204.804s | 204.318s |
+| 100000          | 2.2816s  | 1.5117s  | 1.60508s | 1.60542s |
+| 1000000         | 22.1502s | 15.7225s | 14.8622s | 14.8566s |
+| 10000000        | 225.638s | 156.761s | 152.472s | 152.388s |
 
-Optimizavimo vėliavėlės padidino programos veikimo spartą su visais testuotais duomenų kiekiais. Skirtumas tarp jų nežymus, bet kaip efektyviausias programai galima išskirti O2 ir O3 vėliavėles.
+
+Optimizavimo vėliavėlės padidino programos veikimo spartą su visais testuotais duomenų kiekiais. Efektyviausios programai - O2 ir O3 vėliavėlės.
+
+#### Vykdomojo failo .exe dydis baitais
+
+| Failo formatas | O0      | O1      | O2      | O3      |
+| -------------- | ------- | ------- | ------- | ------- |
+| .exe           | 593 678 | 293 496 | 324 697 | 326 919 |
+
+Visos optimizavimo vėliavėlės sumažino .exe failo dydį. Mažiausias failo dydis pasiektas naudojant O2 vėliavėlę.
 
 Ankstesnės versijos aprašytos [čia](https://github.com/Naktis/final-grades/blob/master/README.md).
 ------------
