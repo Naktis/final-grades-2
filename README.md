@@ -186,9 +186,3 @@ Optimizavimo vėliavėlės padidino programos veikimo spartą su visais testuota
 Visos optimizavimo vėliavėlės sumažino .exe failo dydį. Mažiausias failo dydis pasiektas naudojant O2 vėliavėlę.
 
 Ankstesnės versijos aprašytos [čia](https://github.com/Naktis/final-grades/blob/master/README.md).
-------------
-Augustina Šareikaitė
-
-Informacinių sistemų inžinerija, I kursas, I grupė
-
-Vilniaus universitetas
